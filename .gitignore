@@ -9,3 +9,5 @@ bin
 target/work
 *.orig
 wrapper
+*.swp
+*.swo
