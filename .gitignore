@@ -6,7 +6,7 @@
 *.tmp
 *.temp
 bin
-target/work
+target
 *.orig
 wrapper
 *.swp
