@@ -103,6 +103,8 @@
 			</ul>
 		</div>
 		<div id="page-body" role="main">
+	<sec:ifLoggedIn><h1>Hey, I know you; you're <sec:username/>!</h1></sec:ifLoggedIn>
+<sec:ifNotLoggedIn><h1>Who are you?</h1></sec:ifNotLoggedIn>	
 			<h1>Welcome to Grails</h1>
 			<p>Congratulations, you have successfully started your first Grails application! At the moment
 			   this is the default page, feel free to modify it to either redirect to a controller or display whatever

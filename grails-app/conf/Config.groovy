@@ -63,7 +63,7 @@ grails {
         }
     }
 }
- 
+
 grails.converters.encoding = "UTF-8"
 // scaffolding templates configuration
 grails.scaffolding.templates.domainSuffix = 'Instance'
@@ -119,6 +119,8 @@ log4j = {
 grails.plugin.springsecurity.userLookup.userDomainClassName = 'nl.jappieklooster.kook.security.User'
 grails.plugin.springsecurity.userLookup.authorityJoinClassName = 'nl.jappieklooster.kook.security.UserRole'
 grails.plugin.springsecurity.authority.className = 'nl.jappieklooster.kook.security.Role'
+grails.plugin.springsecurity.password.encodeHashAsBase64 = true
+
 grails.plugin.springsecurity.controllerAnnotations.staticRules = [
 	'/':                              ['permitAll'],
 	'/index':                         ['permitAll'],
