@@ -5,5 +5,6 @@ class Unit {
 	String abbreviation
 	String plural
     static constraints = {
+		name blank:false, unique: true
     }
 }
