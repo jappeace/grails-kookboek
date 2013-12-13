@@ -2,6 +2,6 @@
 beans = {
 
 }
-	if (GrailsUtil.environment == "test"){
-		springSecurityService(nl.jappieklooster.stub.spring.SecurityService)
-	}
+//if (GrailsUtil.environment == "test"){
+	//springSecurityService(nl.jappieklooster.stub.spring.SecurityService)
+//}

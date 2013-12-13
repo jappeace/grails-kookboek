@@ -16,7 +16,7 @@ hibernate {
 // environment specific settings
 environments {
 
-	host = "jappie.nl"
+	host = "10.0.0.98"
     development {
         dataSource {
 			driverClassName = "org.h2.Driver"
@@ -28,7 +28,7 @@ environments {
     }
     test {
         dataSource {
-            dbCreate = "update"
+            dbCreate = "create-drop"
             url = "jdbc:mysql://${host}/kook_test?useUnicode=yes&characterEncoding=UTF-8"
         }
     }
