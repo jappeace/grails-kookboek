@@ -130,4 +130,6 @@ grails.plugin.springsecurity.controllerAnnotations.staticRules = [
 	'/**/images/**':                  ['permitAll'],
 	'/**/favicon.ico':                ['permitAll']
 ]
-
+test {
+  grails.plugins.springsecurity.active = false        
+}

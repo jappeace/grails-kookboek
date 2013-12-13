@@ -8,7 +8,9 @@ class UserRole implements Serializable {
 
 	User user
 	Role role
-
+	String toString(){
+		return role.authority
+	}
 	boolean equals(other) {
 		if (!(other instanceof UserRole)) {
 			return false

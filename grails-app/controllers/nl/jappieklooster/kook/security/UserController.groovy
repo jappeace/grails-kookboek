@@ -1,13 +1,12 @@
 package nl.jappieklooster.kook.security
 
-
-
 import static org.springframework.http.HttpStatus.*
-import grails.plugin.springsecurity.annotation.Secured
 import grails.transaction.Transactional
+import grails.plugin.springsecurity.annotation.Secured
+import nl.jappieklooster.Log
 
+@Secured(["ROLE_ADMIN"])
 @Transactional(readOnly = true)
-@Secured(['ROLE_ADMIN'])
 class UserController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
@@ -36,9 +35,8 @@ class UserController {
             respond userInstance.errors, view:'create'
             return
         }
-
-        userInstance.save flush:true
-
+        userInstance.saveAndBindRoles params.roles
+		
         request.withFormat {
             form {
                 flash.message = message(code: 'default.created.message', args: [message(code: 'userInstance.label', default: 'User'), userInstance.id])
@@ -64,7 +62,7 @@ class UserController {
             return
         }
 
-        userInstance.save flush:true
+        userInstance.saveAndBindRoles params.roles
 
         request.withFormat {
             form {

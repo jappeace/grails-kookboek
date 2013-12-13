@@ -1,4 +1,6 @@
+<%@ page import="nl.jappieklooster.kook.security.Role" %>
 <%@ page import="nl.jappieklooster.kook.security.User" %>
+<%@ page import="nl.jappieklooster.kook.security.UserRole" %>
 
 
 
@@ -49,4 +51,14 @@
 	</label>
 	<g:checkBox name="passwordExpired" value="${userInstance?.passwordExpired}" />
 </div>
-
+<div class="fieldcontain">
+    <label for="roles">rollen 
+		  (houd shift ingedrukt voor meerdere)
+    </label>
+	<g:select name="roles"
+		  from="${Role.findAll()}"
+		  value="${userInstance.isAttached()? UserRole.findAllByUser(userInstance)?.role.id : null}"
+		  optionKey="id" 
+		  multiple="true"
+		  />
+</div>

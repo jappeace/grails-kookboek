@@ -1,7 +1,7 @@
 import nl.jappieklooster.kook.security.Role
 import nl.jappieklooster.kook.security.User
 import nl.jappieklooster.kook.security.UserRole
-
+import nl.jappieklooster.Log
 class BootStrap {
     def springSecurityService
     def init = { servletContext ->
@@ -11,10 +11,9 @@ class BootStrap {
 		def RoleCustomer =  Role.findByAuthority("ROLE_CUSTOMER") ?: new Role(authority: "ROLE_CUSTOMER").save()
 
 		def startUsers = [
-			[username:"baal", role: RoleAdmin],
-			[username:"jimmy", role: RoleCustomer],
-			[username:"marvin", role: RoleProducer],
-			[username:"jappie", role: RoleProducer]
+			[username:"admin", role: RoleAdmin],
+			[username:"chef", role:RoleProducer],
+			[username:"bezoeker", role: RoleCustomer],
 		]
 
 		def users = User.list() ?: []
@@ -27,7 +26,7 @@ class BootStrap {
 					enabled: true
 				)
 				if(user.validate()){
-					println "creating user ${i['username']}"
+					Log.write "creating user {0}", i['username']
 					user.save(flush:true)
 					UserRole.create user, i['role']
 				}

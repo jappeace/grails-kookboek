@@ -1,18 +1,23 @@
 package nl.jappieklooster.kook.security
 
-
-
+import nl.jappieklooster.stub.spring.SecurityServiceStub
 import grails.test.mixin.*
 import spock.lang.*
 
 @TestFor(UserController)
-@Mock(User)
+@Mock([User, UserRole])
+@Stub(SecurityServiceStub)
 class UserControllerSpec extends Specification {
 
     def populateValidParams(params) {
         assert params != null
-        // TODO: Populate valid properties like...
-        //params["name"] = 'someValidName'
+		params["username"] = "henk"
+		params["password"] = "henks"
+		params["enabled"] = "on" 
+		params["_accountLocked"] = "" 
+		params["_passwordExpired"] = "" 
+		params["_enabled"] = "" 
+		params["roles"] = [1, 3]
     }
 
     void "Test the index action returns the correct model"() {
@@ -48,7 +53,7 @@ class UserControllerSpec extends Specification {
             response.reset()
             populateValidParams(params)
             user = new User(params)
-
+			user.springSecurityService = new SecurityServiceStub()
             controller.save(user)
 
         then:"A redirect is issued to the show action"
