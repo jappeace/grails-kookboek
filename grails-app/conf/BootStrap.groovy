@@ -95,7 +95,7 @@ class BootStrap {
     }
     def destroy = {
     }
-    public boolean storeIfNoTypeElements(LinkedHashMap list, Class type){
+    private boolean storeIfNoTypeElements(LinkedHashMap list, Class type){
         Log.write "Started with adding the {0} classes.", type.getName()
         
         if(type.list()){
