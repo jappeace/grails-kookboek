@@ -50,6 +50,15 @@
 				</li>
 				</g:if>
 			
+				<g:if test="${unitInstance?.dimension}">
+				<li class="fieldcontain">
+					<span id="dimension-label" class="property-label"><g:message code="unit.dimension.label" default="Dimension" /></span>
+					
+						<span class="property-value" aria-labelledby="dimension-label"><g:link controller="dimension" action="show" id="${unitInstance?.dimension?.id}">${unitInstance?.dimension?.encodeAsHTML()}</g:link></span>
+					
+				</li>
+				</g:if>
+			
 			</ol>
 			<g:form url="[resource:unitInstance, action:'delete']" method="DELETE">
 				<fieldset class="buttons">

@@ -30,6 +30,8 @@
 					
 						<g:sortableColumn property="abbreviation" title="${message(code: 'unit.abbreviation.label', default: 'Abbreviation')}" />
 					
+						<th><g:message code="unit.dimension.label" default="Dimension" /></th>
+					
 					</tr>
 				</thead>
 				<tbody>
@@ -41,6 +43,8 @@
 						<td>${fieldValue(bean: unitInstance, field: "plural")}</td>
 					
 						<td>${fieldValue(bean: unitInstance, field: "abbreviation")}</td>
+					
+						<td>${fieldValue(bean: unitInstance, field: "dimension")}</td>
 					
 					</tr>
 				</g:each>

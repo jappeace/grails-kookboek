@@ -26,3 +26,11 @@
 	<g:textField name="abbreviation" value="${unitInstance?.abbreviation}"/>
 </div>
 
+<div class="fieldcontain ${hasErrors(bean: unitInstance, field: 'dimension', 'error')} required">
+	<label for="dimension">
+		<g:message code="unit.dimension.label" default="Dimension" />
+		<span class="required-indicator">*</span>
+	</label>
+	<g:select id="dimension" name="dimension.id" from="${nl.jappieklooster.kook.quantification.Dimension.list()}" optionKey="id" required="" value="${unitInstance?.dimension?.id}" class="many-to-one"/>
+</div>
+

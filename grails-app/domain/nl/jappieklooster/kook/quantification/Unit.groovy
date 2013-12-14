@@ -6,8 +6,19 @@ import nl.jappieklooster.kook.Named
 */
 class Unit extends Named{
 	String abbreviation
+	Dimension dimension
 	static belongsTo = Dimension
     static constraints = {
 		name blank:false, unique: true
+		abbreviation nullable:true
     }
+	String toString(){
+		return dimension.toString() + ": " + plural
+	}
+	String getAbbreviation(){
+		if (abbreviation == null){
+			return plural
+		}
+		return abbreviation
+	}
 }

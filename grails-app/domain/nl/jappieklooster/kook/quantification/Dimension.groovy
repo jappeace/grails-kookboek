@@ -10,4 +10,7 @@ class Dimension extends Named{
 		units nullable:true
 		name unique: true
     }
+	String toString(){
+		return name
+	}
 }

@@ -17,6 +17,10 @@ abstract class Named {
 		plural nullable:true, blank:false
     }
 	public String getPlural(){
+		// on a create action the default value of plural would be nullable, which looked stupid
+		if (name == null){
+			return ""
+		}
 		return plural ?: name + DEFAULT_PLURIFICATION
 	}
 }
