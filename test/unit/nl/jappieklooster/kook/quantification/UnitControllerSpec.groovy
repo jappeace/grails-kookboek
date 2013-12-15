@@ -33,7 +33,7 @@ class UnitControllerSpec extends Specification {
             model.unitInstance!= null
     }
 
-    void "Test the save action correctly persists an instance"() {
+    void "Test the save action outer values"() {
 
         when:"The save action is executed with an invalid instance"
             def unit = new Unit()
@@ -43,18 +43,6 @@ class UnitControllerSpec extends Specification {
         then:"The create view is rendered again with the correct model"
             model.unitInstance!= null
             view == 'create'
-
-        when:"The save action is executed with a valid instance"
-            response.reset()
-            populateValidParams(params)
-            unit = new Unit(params)
-
-            controller.save(unit)
-
-        then:"A redirect is issued to the show action"
-            response.redirectedUrl == '/unit/show/1'
-            controller.flash.message != null
-            Unit.count() == 1
     }
 
     void "Test that the show action returns the correct model"() {
@@ -89,7 +77,7 @@ class UnitControllerSpec extends Specification {
             model.unitInstance == unit
     }
 
-    void "Test the update action performs an update on a valid domain instance"() {
+    void "Test the update action outer values"() {
         when:"Update is called for a domain instance that doesn't exist"
             controller.update(null)
 
@@ -107,39 +95,13 @@ class UnitControllerSpec extends Specification {
         then:"The edit view is rendered again with the invalid instance"
             view == 'edit'
             model.unitInstance == unit
-
-        when:"A valid domain instance is passed to the update action"
-            response.reset()
-            populateValidParams(params)
-            unit = new Unit(params).save(flush: true)
-            controller.update(unit)
-
-        then:"A redirect is issues to the show action"
-            response.redirectedUrl == "/unit/show/$unit.id"
-            flash.message != null
     }
 
-    void "Test that the delete action deletes an instance if it exists"() {
+    void "Test that the delete action outer values"() {
         when:"The delete action is called for a null instance"
             controller.delete(null)
 
         then:"A 404 is returned"
-            response.redirectedUrl == '/unit/index'
-            flash.message != null
-
-        when:"A domain instance is created"
-            response.reset()
-            populateValidParams(params)
-            def unit = new Unit(params).save(flush: true)
-
-        then:"It exists"
-            Unit.count() == 1
-
-        when:"The domain instance is passed to the delete action"
-            controller.delete(unit)
-
-        then:"The instance is deleted"
-            Unit.count() == 0
             response.redirectedUrl == '/unit/index'
             flash.message != null
     }

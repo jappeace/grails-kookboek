@@ -1,6 +1,7 @@
 package nl.jappieklooster.kook.book
 import nl.jappieklooster.kook.quantification.Unit
 import nl.jappieklooster.kook.Authored
+import org.apache.commons.lang3.text.WordUtils
 /**
 * things inside a cookbook, recipies and ingredients. an ingredient can become a recipe by adding ingredients to it.
 */

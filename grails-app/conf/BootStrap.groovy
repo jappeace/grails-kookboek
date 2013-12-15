@@ -112,14 +112,16 @@ class BootStrap {
 			)
 		]	
 		storeIfNoTypeElements(units, Unit)
+		// add some categories
 		def categories = [
 			koud: new Category(name: "koud", author: users.admin),
 			warm: new Category(name: "warm", author: users.admin),
 		]
-
 		categories.dessert = new Category(name: "dessert", parent: categories.koud, author: users.admin)
 		categories.voor = new Category(name: "voorgerecht", parent: categories.koud, author: users.admin)
 		storeIfNoTypeElements(categories, Category)
+
+		// add some content
     }
     def destroy = {
     }
