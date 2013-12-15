@@ -3,6 +3,8 @@ import nl.jappieklooster.kook.security.Role
 import nl.jappieklooster.kook.security.User
 import nl.jappieklooster.kook.security.UserRole
 import nl.jappieklooster.kook.book.Category
+import nl.jappieklooster.kook.book.Content
+import nl.jappieklooster.kook.book.Ingredient
 import nl.jappieklooster.Log
 class BootStrap {
     def springSecurityService
@@ -122,6 +124,70 @@ class BootStrap {
 		storeIfNoTypeElements(categories, Category)
 
 		// add some content
+		def contents =[
+			aardbei:	new Content(
+				name: "aardbei",
+				unit: units.gr
+			),
+			crfr:		new Content(
+				name: "cr\u00E8me fra\u00CEche",
+				unit: units.gr,
+				plural:"cr\u00E8me fra\u00CEches" 
+			),
+			eidooi:		new Content(
+				name: "eidooier",
+				unit: units.gr,
+				description: "Ei dooier of ei geel"
+			),
+			frdebois:	new Content(
+				name: "fraiche de bois",
+				unit: units.dl
+			),
+			gelatine:	new Content(
+				name: "gelantine",
+				unit: units.leaf,
+				plural:"gelantines"
+			),
+			sugar:		new Content(
+				name: "suiker",
+				unit: units.gr,
+				plural: "suikers"
+			)
+		]
+		contents.aardbeienTaart = new Content(
+			name: "aardbeientaart",
+			description:"harde wener bodem.  900 gram aardbeien, 50 gram frac\u00CEhe de bois.  Verwarmen en hierin 10 blaadjes gelatine oplossen.  Als dit koud is mengen met de eidooier, crm\u00E8e frac\u00CEhe en suiker.  Dit storten op de harde wener bodem en afbakken op 90 graden 1,5 uur."
+		)
+		contents.each{ key, content ->
+			content.author = users.chef
+		}
+		storeIfNoTypeElements(contents, Content)
+
+		[
+			new Ingredient(
+				data: contents.aardbei,
+				prepend: "diepvries"
+			), 
+			new Ingredient(
+				data: contents.crfr,
+			), 
+			new Ingredient(
+				data: contents.eidooi,
+			), 
+			new Ingredient(
+				data: contents.frdebois,
+				prepend: "scheutje"
+			), 
+			new Ingredient(
+				data: contents.gelatine,
+			), 
+			new Ingredient(
+				data: contents.sugar,
+			) 
+		].each{
+			contents.aardbeienTaart.addToIngredients(it)
+		}
+		categories.koud.addToContents(contents.aardbeienTaart)
     }
     def destroy = {
     }

@@ -1,6 +1,5 @@
 package nl.jappieklooster.kook
-import org.apache.commons.lang3.text.WordUtils
-
+import nl.jappieklooster.Echo
 /**
 * Al classes that require naming should extend from this one.
 * Naming is somthing that happens a lot so I thought, why not pack the logic together
@@ -26,6 +25,6 @@ abstract class Named {
 	}
 	String toString(){
 		// make sure the first letter is capitalized by default
-		return WordUtils.capitalize(name.toLowerCase())
+		return Echo.UpperCaseFirst(name)
 	}
 }

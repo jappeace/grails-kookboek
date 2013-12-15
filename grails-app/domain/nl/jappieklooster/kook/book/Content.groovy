@@ -1,7 +1,7 @@
 package nl.jappieklooster.kook.book
 import nl.jappieklooster.kook.quantification.Unit
 import nl.jappieklooster.kook.Authored
-import org.apache.commons.lang3.text.WordUtils
+import nl.jappieklooster.Echo
 /**
 * things inside a cookbook, recipies and ingredients. an ingredient can become a recipe by adding ingredients to it.
 */
@@ -10,10 +10,15 @@ class Content extends Authored {
 	/** content canot exists without a book to be stored in */
 	static belongsTo = Category
 	static hasMany = [ingredients: Ingredient, categories:Category]
-	/** unit of measurement (kg or l) */
+	/** unit of measurement (kg or l)
+	* when set to null it will use itself als a value.
+	* ie a pie would be measured in pies instead of grams. (which could also work, but the option is open)
+	*/
 	Unit unit
     static constraints = {
+		unit nullable:true
 		ingredients nullable:true
+		description nullable:true
     }
 	static mapping = {
 		description type:'text'
@@ -23,7 +28,9 @@ class Content extends Authored {
 		if(name == null && unit == null){
 			return ""
 		}
+		// if unit == null, return the plural as a unit 
+		String u = unit ?: plural
 		// return with first word capitalized, decapitlize the rest
-		return WordUtils.capitalize(name.toString().toLowerCase())+(" "+ unit.toString()).toLowerCase()
+		return Echo.UpperCaseFirst(name)+" "+ u.toString().toLowerCase()
 	}
 }
