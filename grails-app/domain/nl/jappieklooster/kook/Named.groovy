@@ -1,4 +1,5 @@
 package nl.jappieklooster.kook
+import org.apache.commons.lang3.text.WordUtils
 
 /**
 * Al classes that require naming should extend from this one.
@@ -22,5 +23,9 @@ abstract class Named {
 			return ""
 		}
 		return plural ?: name + DEFAULT_PLURIFICATION
+	}
+	String toString(){
+		// make sure the first letter is capitalized by default
+		return WordUtils.capitalize(name.toLowerCase())
 	}
 }

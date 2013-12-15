@@ -8,4 +8,7 @@ abstract class Authored  extends Named{
 	User author
     static constraints = {
     }
+	String toString(){
+		return name
+	}
 }

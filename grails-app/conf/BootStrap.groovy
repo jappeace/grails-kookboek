@@ -2,35 +2,56 @@ import nl.jappieklooster.kook.quantification.*
 import nl.jappieklooster.kook.security.Role
 import nl.jappieklooster.kook.security.User
 import nl.jappieklooster.kook.security.UserRole
+import nl.jappieklooster.kook.book.Book
 import nl.jappieklooster.Log
 class BootStrap {
     def springSecurityService
     def init = { servletContext ->
-
-		def RoleAdmin = Role.findByAuthority("ROLE_ADMIN") ?: new Role(authority: "ROLE_ADMIN").save()
-		def RoleProducer = Role.findByAuthority("ROLE_CHEF") ?: new Role(authority: "ROLE_CHEF").save()
-		def RoleCustomer =  Role.findByAuthority("ROLE_CUSTOMER") ?: new Role(authority: "ROLE_CUSTOMER").save()
-
-		def startUsers = [
-			[username:"admin", role: RoleAdmin],
-			[username:"chef", role:RoleProducer],
-			[username:"bezoeker", role: RoleCustomer],
+		def roles = [
+			admin:Role.findByAuthority("ROLE_ADMIN") ?: new Role(authority: "ROLE_ADMIN").save(),
+			chef:Role.findByAuthority("ROLE_CHEF") ?: new Role(authority: "ROLE_CHEF").save(),
+			guest:Role.findByAuthority("ROLE_GUEST") ?: new Role(authority: "ROLE_GUEST").save() 
 		]
-
-		def users = User.list() ?: []
-
-		if(!users){
-			startUsers.each{ i ->
-				def user = new User(
-					username: i['username'],
+		def users = [
+			admin:
+				new User(
+					username: "admin",
+					password: "pass",
+					enabled: true
+				),
+			chef: 
+				new User(
+					username: "chef",
+					password: "pass",
+					enabled: true
+				),
+			visitor:
+				new User(
+					username: "bezoeker",
 					password: "pass",
 					enabled: true
 				)
-				if(user.validate()){
-					Log.write "creating user {0}", i['username']
-					user.save(flush:true)
-					UserRole.create user, i['role']
+		]
+		def startUsers = [
+			[
+				user: users.admin, 
+				role: roles.admin
+			], [
+				user: users.chef, 
+				role: roles.chef
+			], [
+				user: users.visitor, 
+				role: roles.guest
+			],
+		]
+		if(!User.list()){
+			startUsers.each{ i ->
+				if(i.user.validate()){
+					Log.write "creating user {0}", i.user['username']
+					i.user.save(flush:true)
+					UserRole.create i.user, i.role
 				}
+			
 			}
 		}
 		def dimensions =  [
@@ -90,8 +111,10 @@ class BootStrap {
 				dimension: dimensions.things
 			)
 		]	
-
 		storeIfNoTypeElements(units, Unit)
+		def books = [
+			koud: new Book()
+		]
     }
     def destroy = {
     }

@@ -46,4 +46,7 @@ class User {
 			UserRole.create this, Role.findById(role)
 		}
 	}
+	String toString(){
+		return username
+	}
 }
