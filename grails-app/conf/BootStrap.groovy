@@ -2,7 +2,7 @@ import nl.jappieklooster.kook.quantification.*
 import nl.jappieklooster.kook.security.Role
 import nl.jappieklooster.kook.security.User
 import nl.jappieklooster.kook.security.UserRole
-import nl.jappieklooster.kook.book.Book
+import nl.jappieklooster.kook.book.Category
 import nl.jappieklooster.Log
 class BootStrap {
     def springSecurityService
@@ -112,9 +112,14 @@ class BootStrap {
 			)
 		]	
 		storeIfNoTypeElements(units, Unit)
-		def books = [
-			koud: new Book()
+		def categories = [
+			koud: new Category(name: "koud", author: users.admin),
+			warm: new Category(name: "warm", author: users.admin),
 		]
+
+		categories.dessert = new Category(name: "dessert", parent: categories.koud, author: users.admin)
+		categories.voor = new Category(name: "voorgerecht", parent: categories.koud, author: users.admin)
+		storeIfNoTypeElements(categories, Category)
     }
     def destroy = {
     }

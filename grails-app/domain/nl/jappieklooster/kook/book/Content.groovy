@@ -7,8 +7,8 @@ import nl.jappieklooster.kook.Authored
 class Content extends Authored {
 	String description
 	/** content canot exists without a book to be stored in */
-	static belongsTo = Book
-	static hasMany = [ingredients: Ingredient, books:Book]
+	static belongsTo = Category
+	static hasMany = [ingredients: Ingredient, books:Category]
 	/** unit of measurement (kg or l) */
 	Unit unit
     static constraints = {
