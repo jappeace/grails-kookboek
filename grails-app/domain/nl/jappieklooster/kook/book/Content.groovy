@@ -8,7 +8,7 @@ class Content extends Authored {
 	String description
 	/** content canot exists without a book to be stored in */
 	static belongsTo = Category
-	static hasMany = [ingredients: Ingredient, books:Category]
+	static hasMany = [ingredients: Ingredient, categories:Category]
 	/** unit of measurement (kg or l) */
 	Unit unit
     static constraints = {
@@ -18,6 +18,11 @@ class Content extends Authored {
 		description type:'text'
 	}
 	String toString(){
-		return name + unit
+		// filetring out instances that are created with new
+		if(name == null && unit == null){
+			return ""
+		}
+		// return with first word capitalized, decapitlize the rest
+		return WordUtils.capitalize(name.toString().toLowerCase())+(" "+ unit.toString()).toLowerCase()
 	}
 }
