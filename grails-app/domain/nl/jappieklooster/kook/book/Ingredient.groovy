@@ -7,9 +7,6 @@ import nl.jappieklooster.Echo
 * Ingredients are contents with possible prepends and amends, to describe the state of the ingredient
 */
 class Ingredient {
-	// the actual information resides in the content class	
-	Content data
-	
 	/** allows a small amount of text to be prepended to the ingredient*/
 	String prepend
 	/** allows a small amount of text to be ammended (insert after) the ingredient */
@@ -18,12 +15,15 @@ class Ingredient {
 	/** should this ingredient show what the ingredient is made of (if its made of anything)*/
 	boolean isShowingSubRecipe
 
-	static belongsTo = [content: Content]
+	static belongsTo = [recipe: Content, ingredient: Content]
     static constraints = {
 		prepend nullable:true
 		ammend nullable:true
     }
 	String toString(){
+		if(data == null){
+			return ""
+		}
 		String result = ""
 		if(prepend != null){
 			result += Echo.UpperCaseFirst(prepend)

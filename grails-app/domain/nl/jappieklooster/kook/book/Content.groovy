@@ -33,4 +33,5 @@ class Content extends Authored {
 		// return with first word capitalized, decapitlize the rest
 		return Echo.UpperCaseFirst(name)+" "+ u.toString().toLowerCase()
 	}
+	static mappedBy = [ingredients:'recipe']
 }

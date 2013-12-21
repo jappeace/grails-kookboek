@@ -165,24 +165,24 @@ class BootStrap {
 
 		[
 			new Ingredient(
-				data: contents.aardbei,
+				ingredient: contents.aardbei,
 				prepend: "diepvries"
 			), 
 			new Ingredient(
-				data: contents.crfr,
+				ingredient: contents.crfr,
 			), 
 			new Ingredient(
-				data: contents.eidooi,
+				ingredient: contents.eidooi,
 			), 
 			new Ingredient(
-				data: contents.frdebois,
+				ingredient: contents.frdebois,
 				prepend: "scheutje"
 			), 
 			new Ingredient(
-				data: contents.gelatine,
+				ingredient: contents.gelatine,
 			), 
 			new Ingredient(
-				data: contents.sugar,
+				ingredient: contents.sugar,
 			) 
 		].each{
 			contents.aardbeienTaart.addToIngredients(it)
