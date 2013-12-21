@@ -7,8 +7,6 @@ import nl.jappieklooster.Echo
 */
 class Content extends Authored {
 	String description
-	/** content canot exists without a book to be stored in */
-	static belongsTo = Category
 	static hasMany = [ingredients: Ingredient, categories:Category]
 	/** unit of measurement (kg or l)
 	* when set to null it will use itself als a value.
