@@ -53,14 +53,6 @@
 	<g:textField name="description" value="${contentInstance?.description}"/>
 </div>
 
-<div class="fieldcontain ${hasErrors(bean: contentInstance, field: 'author', 'error')} required">
-	<label for="author">
-		<g:message code="content.author.label" default="Author" />
-		<span class="required-indicator">*</span>
-	</label>
-	<g:select id="author" name="author.id" from="${nl.jappieklooster.kook.security.User.list()}" optionKey="id" required="" value="${contentInstance?.author?.id}" class="many-to-one"/>
-</div>
-
 <div class="fieldcontain ${hasErrors(bean: contentInstance, field: 'categories', 'error')} ">
 	<label for="categories">
 		<g:message code="content.categories.label" default="Categories" />

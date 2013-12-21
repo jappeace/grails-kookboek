@@ -33,12 +33,3 @@
 	</label>
 	<g:select id="parent" name="parent.id" from="${nl.jappieklooster.kook.book.Category.list()}" optionKey="id" value="${categoryInstance?.parent?.id}" class="many-to-one" noSelection="['null': '']"/>
 </div>
-
-<div class="fieldcontain ${hasErrors(bean: categoryInstance, field: 'author', 'error')} required">
-	<label for="author">
-		<g:message code="category.author.label" default="Author" />
-		<span class="required-indicator">*</span>
-	</label>
-	<g:select id="author" name="author.id" from="${nl.jappieklooster.kook.security.User.list()}" optionKey="id" required="" value="${categoryInstance?.author?.id}" class="many-to-one"/>
-</div>
-
