@@ -41,6 +41,15 @@
 				</li>
 				</g:if>
 			
+				<g:if test="${contentInstance?.unit}">
+				<li class="fieldcontain">
+					<span id="unit-label" class="property-label"><g:message code="content.unit.label" default="Unit" /></span>
+					
+						<span class="property-value" aria-labelledby="unit-label"><g:link controller="unit" action="show" id="${contentInstance?.unit?.id}">${contentInstance?.unit?.encodeAsHTML()}</g:link></span>
+					
+				</li>
+				</g:if>
+			
 				<g:if test="${contentInstance?.ingredients}">
 				<li class="fieldcontain">
 					<span id="ingredients-label" class="property-label"><g:message code="content.ingredients.label" default="Ingredients" /></span>
@@ -48,6 +57,15 @@
 						<g:each in="${contentInstance.ingredients}" var="i">
 						<span class="property-value" aria-labelledby="ingredients-label"><g:link controller="ingredient" action="show" id="${i.id}">${i?.encodeAsHTML()}</g:link></span>
 						</g:each>
+					
+				</li>
+				</g:if>
+			
+				<g:if test="${contentInstance?.description}">
+				<li class="fieldcontain">
+					<span id="description-label" class="property-label"><g:message code="content.description.label" default="Description" /></span>
+					
+						<span class="property-value" aria-labelledby="description-label"><g:fieldValue bean="${contentInstance}" field="description"/></span>
 					
 				</li>
 				</g:if>
@@ -68,24 +86,6 @@
 						<g:each in="${contentInstance.categories}" var="c">
 						<span class="property-value" aria-labelledby="categories-label"><g:link controller="category" action="show" id="${c.id}">${c?.encodeAsHTML()}</g:link></span>
 						</g:each>
-					
-				</li>
-				</g:if>
-			
-				<g:if test="${contentInstance?.description}">
-				<li class="fieldcontain">
-					<span id="description-label" class="property-label"><g:message code="content.description.label" default="Description" /></span>
-					
-						<span class="property-value" aria-labelledby="description-label"><g:fieldValue bean="${contentInstance}" field="description"/></span>
-					
-				</li>
-				</g:if>
-			
-				<g:if test="${contentInstance?.unit}">
-				<li class="fieldcontain">
-					<span id="unit-label" class="property-label"><g:message code="content.unit.label" default="Unit" /></span>
-					
-						<span class="property-value" aria-labelledby="unit-label"><g:link controller="unit" action="show" id="${contentInstance?.unit?.id}">${contentInstance?.unit?.encodeAsHTML()}</g:link></span>
 					
 				</li>
 				</g:if>

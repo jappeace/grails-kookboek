@@ -23,7 +23,7 @@
 		<g:message code="category.contents.label" default="Contents" />
 		
 	</label>
-	<g:select name="contents" from="${nl.jappieklooster.kook.book.Content.list()}" multiple="multiple" optionKey="id" size="5" value="${categoryInstance?.contents*.id}" class="many-to-many"/>
+	
 </div>
 
 <div class="fieldcontain ${hasErrors(bean: categoryInstance, field: 'parent', 'error')} ">

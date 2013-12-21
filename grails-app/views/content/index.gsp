@@ -28,11 +28,11 @@
 					
 						<g:sortableColumn property="plural" title="${message(code: 'content.plural.label', default: 'Plural')}" />
 					
-						<th><g:message code="content.author.label" default="Author" /></th>
+						<th><g:message code="content.unit.label" default="Unit" /></th>
 					
 						<g:sortableColumn property="description" title="${message(code: 'content.description.label', default: 'Description')}" />
 					
-						<th><g:message code="content.unit.label" default="Unit" /></th>
+						<th><g:message code="content.author.label" default="Author" /></th>
 					
 					</tr>
 				</thead>
@@ -44,11 +44,11 @@
 					
 						<td>${fieldValue(bean: contentInstance, field: "plural")}</td>
 					
-						<td>${fieldValue(bean: contentInstance, field: "author")}</td>
+						<td>${fieldValue(bean: contentInstance, field: "unit")}</td>
 					
 						<td>${fieldValue(bean: contentInstance, field: "description")}</td>
 					
-						<td>${fieldValue(bean: contentInstance, field: "unit")}</td>
+						<td>${fieldValue(bean: contentInstance, field: "author")}</td>
 					
 					</tr>
 				</g:each>
