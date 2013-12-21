@@ -21,7 +21,7 @@ class Ingredient {
 		ammend nullable:true
     }
 	String toString(){
-		if(data == null){
+		if(ingredient == null){
 			return ""
 		}
 		String result = ""
@@ -29,9 +29,9 @@ class Ingredient {
 			result += Echo.UpperCaseFirst(prepend)
 		}
 		if(result == ""){
-			result += Echo.UpperCaseFirst(data.name)
+			result += Echo.UpperCaseFirst(ingredient.name)
 		}else{
-			result += " " + data.name	
+			result += " " + ingredient.name	
 		}
 		if(ammend != null){
 			result += " " + ammend

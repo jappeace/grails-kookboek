@@ -21,7 +21,7 @@ class IngredientSpec extends Specification {
 			def instance = new Ingredient(
 				prepend:  null,
 				ammend:  null,
-				data: new Content(
+				ingredient: new Content(
 					name: "aardbij",
 					unit: new Unit(
 							name:"kilo",
