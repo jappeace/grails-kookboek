@@ -45,7 +45,6 @@
 	</div>
 </g:if>
 
-</div>
 <div class="fieldcontain ${hasErrors(bean: contentInstance, field: 'description', 'error')} ">
 	<label for="description">
 		<g:message code="content.description.label" default="Description" />
