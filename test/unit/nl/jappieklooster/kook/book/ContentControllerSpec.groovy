@@ -2,7 +2,7 @@ package nl.jappieklooster.kook.book
 
 import grails.test.mixin.*
 import spock.lang.*
-
+import nl.jappieklooster.kook.stub.SpringSecurityServiceStub
 @TestFor(ContentController)
 @Mock(Content)
 class ContentControllerSpec extends Specification {
@@ -35,6 +35,7 @@ class ContentControllerSpec extends Specification {
 
         when:"The save action is executed with an invalid instance"
             def content = new Content()
+				content.springSecurityService = new SpringSecurityServiceStub()
             content.validate()
             controller.save(content)
 
@@ -87,7 +88,8 @@ class ContentControllerSpec extends Specification {
         when:"An invalid domain instance is passed to the update action"
             response.reset()
             def content = new Content()
-            content.validate()
+				content.springSecurityService = new SpringSecurityServiceStub()
+				content.validate()
             controller.update(content)
 
         then:"The edit view is rendered again with the invalid instance"

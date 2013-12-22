@@ -2,7 +2,7 @@ package nl.jappieklooster.kook.book
 
 import grails.test.mixin.*
 import spock.lang.*
-
+import nl.jappieklooster.kook.stub.SpringSecurityServiceStub
 @TestFor(CategoryController)
 @Mock(Category)
 class CategoryControllerSpec extends Specification {
@@ -35,6 +35,7 @@ class CategoryControllerSpec extends Specification {
 
         when:"The save action is executed with an invalid instance"
             def category = new Category()
+				category.springSecurityService = new SpringSecurityServiceStub()
             category.validate()
             controller.save(category)
 
@@ -87,6 +88,7 @@ class CategoryControllerSpec extends Specification {
         when:"An invalid domain instance is passed to the update action"
             response.reset()
             def category = new Category()
+				category.springSecurityService = new SpringSecurityServiceStub()
             category.validate()
             controller.update(category)
 
