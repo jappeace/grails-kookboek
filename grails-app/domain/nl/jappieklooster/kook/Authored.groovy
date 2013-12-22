@@ -17,6 +17,6 @@ abstract class Authored  extends Named{
 		return name
 	}
 	def beforeValidate(){
-		owner = springSecurityService.getCurrentUser()?.contact ?: owner
+		author = springSecurityService.getCurrentUser() ?: author
 	}
 }

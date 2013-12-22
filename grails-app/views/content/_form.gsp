@@ -39,7 +39,7 @@
 				<li><g:link controller="ingredient" action="show" id="${i.id}">${i?.encodeAsHTML()}</g:link></li>
 			</g:each>
 			<li class="add">
-			<g:link controller="ingredient" action="create" params="['content.id': contentInstance?.id]">${message(code: 'default.add.label', args: [message(code: 'ingredient.label', default: 'Ingredient')])}</g:link>
+			<g:link controller="ingredient" action="create" params="['recipe.id': contentInstance?.id]">${message(code: 'default.add.label', args: [message(code: 'ingredient.label', default: 'Ingredient')])}</g:link>
 			</li>
 		</ul>
 	</div>

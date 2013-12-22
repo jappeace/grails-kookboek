@@ -10,97 +10,96 @@ import grails.plugin.springsecurity.annotation.Secured
 @Transactional(readOnly = true)
 class IngredientController {
 
-    static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
+	static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
-    def index(Integer max) {
-        params.max = Math.min(max ?: 10, 100)
-        respond Ingredient.list(params), model:[ingredientInstanceCount: Ingredient.count()]
-    }
+	def index(Integer max) {
+		params.max = Math.min(max ?: 10, 100)
+		respond Ingredient.list(params), model:[ingredientInstanceCount: Ingredient.count()]
+	}
 
-    def show(Ingredient ingredientInstance) {
-        respond ingredientInstance
-    }
+	def show(Ingredient ingredientInstance) {
+		respond ingredientInstance
+	}
 
-    def create() {
-        respond new Ingredient(params)
-    }
+	def create() {
+		respond new Ingredient(params)
+	}
+	@Transactional
+	def save(Ingredient ingredientInstance) {
+		if (ingredientInstance == null) {
+			notFound()
+			return
+		}
 
-    @Transactional
-    def save(Ingredient ingredientInstance) {
-        if (ingredientInstance == null) {
-            notFound()
-            return
-        }
+		if (ingredientInstance.hasErrors()) {
+			respond ingredientInstance.errors, view:'create'
+			return
+		}
 
-        if (ingredientInstance.hasErrors()) {
-            respond ingredientInstance.errors, view:'create'
-            return
-        }
+		ingredientInstance.save flush:true
 
-        ingredientInstance.save flush:true
+		request.withFormat {
+			form {
+				flash.message = message(code: 'default.created.message', args: [message(code: 'ingredientInstance.label', default: 'Ingredient'), ingredientInstance.id])
+				redirect ingredientInstance
+			}
+			'*' { respond ingredientInstance, [status: CREATED] }
+		}
+	}
 
-        request.withFormat {
-            form {
-                flash.message = message(code: 'default.created.message', args: [message(code: 'ingredientInstance.label', default: 'Ingredient'), ingredientInstance.id])
-                redirect ingredientInstance
-            }
-            '*' { respond ingredientInstance, [status: CREATED] }
-        }
-    }
+	def edit(Ingredient ingredientInstance) {
+		respond ingredientInstance
+	}
 
-    def edit(Ingredient ingredientInstance) {
-        respond ingredientInstance
-    }
+	@Transactional
+	def update(Ingredient ingredientInstance) {
+		if (ingredientInstance == null) {
+			notFound()
+			return
+		}
 
-    @Transactional
-    def update(Ingredient ingredientInstance) {
-        if (ingredientInstance == null) {
-            notFound()
-            return
-        }
+		if (ingredientInstance.hasErrors()) {
+			respond ingredientInstance.errors, view:'edit'
+			return
+		}
 
-        if (ingredientInstance.hasErrors()) {
-            respond ingredientInstance.errors, view:'edit'
-            return
-        }
+		ingredientInstance.save flush:true
 
-        ingredientInstance.save flush:true
+		request.withFormat {
+			form {
+				flash.message = message(code: 'default.updated.message', args: [message(code: 'Ingredient.label', default: 'Ingredient'), ingredientInstance.id])
+				redirect ingredientInstance
+			}
+			'*'{ respond ingredientInstance, [status: OK] }
+		}
+	}
 
-        request.withFormat {
-            form {
-                flash.message = message(code: 'default.updated.message', args: [message(code: 'Ingredient.label', default: 'Ingredient'), ingredientInstance.id])
-                redirect ingredientInstance
-            }
-            '*'{ respond ingredientInstance, [status: OK] }
-        }
-    }
+	@Transactional
+	def delete(Ingredient ingredientInstance) {
 
-    @Transactional
-    def delete(Ingredient ingredientInstance) {
+		if (ingredientInstance == null) {
+			notFound()
+			return
+		}
 
-        if (ingredientInstance == null) {
-            notFound()
-            return
-        }
+		ingredientInstance.delete flush:true
 
-        ingredientInstance.delete flush:true
+		request.withFormat {
+			form {
+				flash.message = message(code: 'default.deleted.message', args: [message(code: 'Ingredient.label', default: 'Ingredient'), ingredientInstance.id])
+				redirect action:"index", method:"GET"
+			}
+			'*'{ render status: NO_CONTENT }
+		}
+	}
 
-        request.withFormat {
-            form {
-                flash.message = message(code: 'default.deleted.message', args: [message(code: 'Ingredient.label', default: 'Ingredient'), ingredientInstance.id])
-                redirect action:"index", method:"GET"
-            }
-            '*'{ render status: NO_CONTENT }
-        }
-    }
-
-    protected void notFound() {
-        request.withFormat {
-            form {
-                flash.message = message(code: 'default.not.found.message', args: [message(code: 'ingredientInstance.label', default: 'Ingredient'), params.id])
-                redirect action: "index", method: "GET"
-            }
-            '*'{ render status: NOT_FOUND }
-        }
-    }
+	protected void notFound() {
+		request.withFormat {
+			form {
+				flash.message = message(code: 'default.not.found.message', args: [message(code: 'ingredientInstance.label', default: 'Ingredient'), params.id])
+				redirect action: "index", method: "GET"
+			}
+			'*'{ render status: NOT_FOUND }
+		}
+	}
 }

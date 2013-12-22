@@ -15,7 +15,10 @@ class Ingredient {
 	/** should this ingredient show what the ingredient is made of (if its made of anything)*/
 	boolean isShowingSubRecipe
 
-	static belongsTo = [recipe: Content, ingredient: Content]
+	static belongsTo = [
+		recipe: Content, 
+		ingredient: Content
+	]
     static constraints = {
 		prepend nullable:true
 		ammend nullable:true
