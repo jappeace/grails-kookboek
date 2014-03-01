@@ -15,6 +15,9 @@ class Content extends Authored {
 	Unit unit
     static constraints = {
 		unit nullable:true
+		/**
+		* When ingerdients == null it is considerd a base ingredient
+		*/
 		ingredients nullable:true
 		description nullable:true
     }

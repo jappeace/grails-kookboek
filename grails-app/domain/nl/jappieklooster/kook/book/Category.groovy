@@ -2,7 +2,8 @@ package nl.jappieklooster.kook.book
 import nl.jappieklooster.kook.Authored
 
 /**
- * a cookbook, that contains contents, like ingredients and recipes
+ * a category is a user defined categorization of content.
+ * It is used for navigation
 */
 class Category extends Authored {
 	Category parent
