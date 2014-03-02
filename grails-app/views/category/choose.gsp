@@ -8,19 +8,23 @@
 		<title><g:message code="default.list.label" args="[entityName]" /></title>
 	</head>
 	<body>
-		<div class="" role="main">
-			<header>
-			<strong>
-			Kies een kookboek categorie:
-			</strong>
-			</header>
+		<div class="jumbotron" role="main">
+			<h1>Welkom op Awesome Boek</h1>
+			<p>
+			Dit is de recepten collectie van Restaurant de Huiskamer.
+			</p>
+			<p>
+			Kies een kookboek categorie om de recepten daarvan te bekijken:
+			<div class="row">
 			<g:each in="${categoryInstanceList}" status="i" var="categoryInstance">
-				<div class="col-md-2">
+				<div class="col-md-3">
 					<g:link action="show" class="btn btn-info btn-lg" id="${categoryInstance.id}">
 							<g:fieldValue bean="${categoryInstance}" field="name" />
 					</g:link>
 				</div>
 			</g:each>
+			</p>
+			</div>
 		</div>
 	</body>
 </html>

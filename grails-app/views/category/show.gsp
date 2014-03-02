@@ -15,9 +15,19 @@
 			<p class="message lead" role="status">${flash.message}</p>
 			</g:if>
 			</header>
+			<table class="table table-striped table-hover">
+			<tr><th>Naam</th></tr>
 			<g:each in="${categoryInstance.contents}" status="i" var="content">
-				<g:fieldValue bean="${content}" field="name" />
+				<g:if test="${content.ingredients == null}">
+				<!-- contents bound to a category without ingredients is suspicious, so highlight it for the user -->
+				<tr class="warning">
+				</g:if>
+				<g:else>
+				<tr>
+				</g:else>
+				<td><g:fieldValue bean="${content}" field="name" /></td></tr>
 			</g:each>
+			</table>
 
 		</div>
 	</body>
