@@ -1,3 +1,4 @@
+<%@ page import="nl.jappieklooster.kook.book.Category" %>
 <!DOCTYPE html>
 <!--[if lt IE 7 ]> <html lang="en" class="no-js ie6"> <![endif]-->
 <!--[if IE 7 ]>    <html lang="en" class="no-js ie7"> <![endif]-->
@@ -10,17 +11,33 @@
 		<title><g:layoutTitle default="Grails"/></title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link rel="stylesheet" href="${resource(dir: 'css', file: 'main.css')}" type="text/css">
-		<r:require modules="bootstrap"/>
 		<g:layoutHead/>
 		<g:javascript library='jquery' />
-		<g:javascript library="application"/>		
+		<g:javascript library="application"/>
 		<r:layoutResources />
 	</head>
 	<body>
-		<div class="container">
-			<header role="banner">Awesome boek</header>
+			<header class="navbar navbar-default navbar-fixed-top" role="banner">
+				<div class="container">
+				<div class="navbar-header">
+					<a href="${createLink(uri: '/')}" class="navbar-brand">Awesome boek</a>
+				</div>
+				<ul class="nav navbar-nav">
+					<g:each in="${Category.findRoots()}" var="category">
+						<li>
+						<g:link action="show" id="${category.id}">
+							<g:fieldValue bean="${category}" field="name" />
+						</g:link>
+						</li>
+					</g:each>
+				</ul>
+				</div>
+			</header>
+		<div class="container layoutBody">
+			<div class="col-md-12">
 			<g:layoutBody/>
-			<div class="footer" role="contentinfo">Gemaakt door Jappie</div>
+			</div>
+			<div class="footer col-md-12" role="contentinfo">Gemaakt door Jappie</div>
 			<div id="spinner" class="spinner" style="display:none;"><g:message code="spinner.alt" default="Loading&hellip;"/></div>
 			<r:layoutResources />
 		</div>

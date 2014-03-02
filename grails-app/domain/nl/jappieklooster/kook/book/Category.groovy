@@ -18,4 +18,8 @@ class Category extends Authored {
 		contents nullable:true
 		parent nullable:true
     }
+
+	static List<Category> findRoots(){
+		return Category.findAll{parent == null}
+	}
 }

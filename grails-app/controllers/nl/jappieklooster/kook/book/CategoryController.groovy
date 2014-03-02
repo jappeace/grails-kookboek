@@ -16,9 +16,10 @@ class CategoryController {
         params.max = Math.min(max ?: 10, 100)
         respond Category.list(params), model:[categoryInstanceCount: Category.count()]
     }
+	@Secured(["permitAll"])
     def choose() {
 	 		// only allow choiche between the root categories
-        respond Category.findAll{parent == null}
+        respond Category.findRoots()
     }
 
     def show(Category categoryInstance) {

@@ -23,29 +23,19 @@
 			<table>
 			<thead>
 					<tr>
-					
 						<g:sortableColumn property="name" title="${message(code: 'category.name.label', default: 'Name')}" />
-					
 						<g:sortableColumn property="plural" title="${message(code: 'category.plural.label', default: 'Plural')}" />
-					
 						<th><g:message code="category.parent.label" default="Parent" /></th>
-					
 						<th><g:message code="category.author.label" default="Author" /></th>
-					
 					</tr>
 				</thead>
 				<tbody>
 				<g:each in="${categoryInstanceList}" status="i" var="categoryInstance">
 					<tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
-					
 						<td><g:link action="show" id="${categoryInstance.id}">${fieldValue(bean: categoryInstance, field: "name")}</g:link></td>
-					
 						<td>${fieldValue(bean: categoryInstance, field: "plural")}</td>
-					
 						<td>${fieldValue(bean: categoryInstance, field: "parent")}</td>
-					
 						<td>${fieldValue(bean: categoryInstance, field: "author")}</td>
-					
 					</tr>
 				</g:each>
 				</tbody>
