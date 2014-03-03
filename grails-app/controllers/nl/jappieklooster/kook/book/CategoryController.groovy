@@ -22,6 +22,7 @@ class CategoryController {
         respond Category.findRoots()
     }
 
+	@Secured(["permitAll"])
     def show(Category categoryInstance) {
         respond categoryInstance
     }
