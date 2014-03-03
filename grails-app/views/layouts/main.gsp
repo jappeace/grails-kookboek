@@ -25,7 +25,7 @@
 				<ul class="nav navbar-nav">
 					<g:each in="${Category.findRoots()}" var="category">
 						<li>
-						<g:link action="show" id="${category.id}">
+						<g:link controller="category" action="show" id="${category.id}">
 							<g:fieldValue bean="${category}" field="name" />
 						</g:link>
 						</li>
