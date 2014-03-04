@@ -26,7 +26,7 @@
 			</p>
 			</div>
 		</div>
-		<form class="col-md-4 form form-horizontal" action="/kook/j_spring_security_check">
+		<form method="POST" class="col-md-4 form form-horizontal" action="/kook/j_spring_security_check">
 			<fieldset>
 				<legend>Login</legend>
 				<p>
@@ -36,8 +36,12 @@
 				<input type="text" name="j_username"/>
 				<label for="j_password">Wachtwoord</label>
 				<input type="password" name="j_password" />
-				<input type="submit" value="Log in"/>
+				<label>
+				Herinner mij
+				<input name="_spring_security_remember_me" id="remember_me" type="checkbox">
+				</label>
 			</fieldset>
+			<input type="submit" value="Log in"/>
 		</form>
 	</body>
 </html>
