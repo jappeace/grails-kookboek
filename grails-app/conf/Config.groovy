@@ -123,6 +123,7 @@ grails.plugin.springsecurity.password.encodeHashAsBase64 = true
 
 grails.plugin.springsecurity.controllerAnnotations.staticRules = [
 	'/':                              ['permitAll'],
+	'/dbconsole/**':                  ['ROLE_ADMIN'],
 	'/index.gsp':                     ['permitAll'],
 	'/**/js/**':                      ['permitAll'],
 	'/**/css/**':                     ['permitAll'],

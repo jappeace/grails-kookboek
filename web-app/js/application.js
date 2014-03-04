@@ -32,6 +32,51 @@ if (typeof jQuery !== 'undefined') {
 			//atach the filter function to inputs with specific classes
 			$('.filterable').filterByText($('.filter'));
 		});
+		// check wether to aply default bootstrap styling
+		// allows escaping of styling by adding the ignore-defaults class to a element
+		var isDefaultElement = function(element){
+			return !element.hasClass("ignore-defaults");
+		};
+
+		// some basic bootstrap fixes that make evrything look nicer
+		// and reduce a lot of code
+		$("table").each(function() {
+
+			if(isDefaultElement($(this))){
+				$(this).addClass("table-striped");
+			}
+
+		});
+		$("img").each(function() {
+
+			if(isDefaultElement($(this))){
+				$(this).addClass("img-thumbnail");
+			}
+
+		});
+		$("fieldset").each(function() {
+
+			if(isDefaultElement($(this))){
+				$(this).addClass("form-group");
+			}
+
+		});
+		$("input, textarea, select").each(function() {
+
+			if(isDefaultElement($(this))){
+				$(this).addClass("form-control");
+			}
+
+		});
+		$("input[type=submit], input[type=button], button").each(function() {
+
+			if(isDefaultElement($(this))){
+
+				$(this).removeClass("form-control");
+				$(this).addClass("btn btn-default");
+
+			}
+		});
 	})(jQuery);
 }
 
