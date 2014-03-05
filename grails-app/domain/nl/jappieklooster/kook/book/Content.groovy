@@ -29,7 +29,7 @@ class Content extends Authored {
 		if(name == null && unit == null){
 			return ""
 		}
-		// if unit == null, return the plural as a unit 
+		// if unit == null, return the plural as a unit
 		String u = unit ?: plural
 		// return with first word capitalized, decapitlize the rest
 		return Echo.UpperCaseFirst(name)+" "+ u.toString().toLowerCase()
