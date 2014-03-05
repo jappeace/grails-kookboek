@@ -15,6 +15,7 @@ class ContentController {
         respond Content.list(params), model:[contentInstanceCount: Content.count()]
     }
 
+	@Secured(["permitAll"])
     def show(Content contentInstance) {
         respond contentInstance
     }
