@@ -2,3 +2,12 @@
 div.layoutBody{
 	margin-top:50px;
 }
+.footer{
+	margin-top:3em;
+	text-align:center;
+
+}
+.centered{
+    float: none;
+    margin: 0 auto;	
+}

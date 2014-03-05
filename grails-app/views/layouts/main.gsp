@@ -45,7 +45,9 @@
 			<div class="col-md-12">
 			<g:layoutBody/>
 			</div>
-			<div class="footer col-md-12" role="contentinfo">Gemaakt door Jappie</div>
+			<div class="footer col-md-12">
+				<small>Gemaakt door <a href="jappieklooster.nl">Jappie</a></small>
+			</div>
 			<div id="spinner" class="spinner" style="display:none;"><g:message code="spinner.alt" default="Loading&hellip;"/></div>
 			<r:layoutResources />
 		</div>

@@ -25,7 +25,12 @@
 				<g:else>
 				<tr>
 				</g:else>
-				<td><g:fieldValue bean="${content}" field="name" /></td></tr>
+					<td>
+						<g:link action="show" controller="content" id="${content.id}">
+							<g:fieldValue bean="${content}" field="name" />
+						</g:link>
+					</td>
+				</tr>
 			</g:each>
 			</table>
 
