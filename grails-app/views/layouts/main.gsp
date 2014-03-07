@@ -30,9 +30,13 @@
 						</g:link>
 						</li>
 					</g:each>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
 					<sec:ifLoggedIn>
 						<li>
-							Logged in as <sec:username/> (<g:link controller='logout'>Logout</g:link>)
+						</li>
+						<li>
+							 <g:link controller='logout'>Logout</g:link>
 						</li>
 					</sec:ifLoggedIn>
 					<sec:ifNotLoggedIn>
@@ -43,6 +47,11 @@
 							</li>
 					</sec:ifNotLoggedIn>
 				</ul>
+				<sec:ifLoggedIn>
+					<p class="navbar-text navbar-right">
+						Logged in as <sec:username/>
+					</p>
+				</sec:ifLoggedIn>
 				</div>
 			</header>
 		<div class="container layoutBody">
