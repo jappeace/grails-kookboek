@@ -30,15 +30,19 @@
 						</g:link>
 						</li>
 					</g:each>
-				</ul>
-				<div class="status-bar">
 					<sec:ifLoggedIn>
-					Logged in as <sec:username/> (<g:link controller='logout'>Logout</g:link>)
+						<li>
+							Logged in as <sec:username/> (<g:link controller='logout'>Logout</g:link>)
+						</li>
 					</sec:ifLoggedIn>
 					<sec:ifNotLoggedIn>
-					<a href='#' onclick='showLogin(); return false;'>Login</a>
+							<li>
+								<g:link controller='login'>
+									Login
+								</g:link>
+							</li>
 					</sec:ifNotLoggedIn>
-				</div>
+				</ul>
 				</div>
 			</header>
 		<div class="container layoutBody">
