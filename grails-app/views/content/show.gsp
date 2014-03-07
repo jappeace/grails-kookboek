@@ -66,19 +66,6 @@
 								</dd>
 							</g:each>
 						</g:if>
-						<g:set var="recipes" value="${contentInstance.findRecipeUsage()}" />
-						<g:if test="${recipes.size() > 0}">
-							<dt>
-								Gebruikt in
-							</dt>
-							<g:each in="${recipes}" var="c">
-								<dd>
-									<g:link controller="content" action="show" id="${c.id}">
-										${c?.encodeAsHTML()}
-									</g:link>
-								</dd>
-							</g:each>
-						</g:if>
 					</dl>
 				</div>
 			</div>

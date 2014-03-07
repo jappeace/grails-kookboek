@@ -35,10 +35,4 @@ class Content extends Authored {
 		return Echo.UpperCaseFirst(name)+" "+ u.toString().toLowerCase()
 	}
 	static mappedBy = [ingredients:'recipe']
-	/**
-	* finds the recipes where this content is used in
-	*/
-	def findRecipeUsage(){
-		return Content.findAll("from Content as content inner join content.ingredients as bridge inner join bridge.ingredient as candidate with candidate.id = ?", [this.id])
-	}
 }
