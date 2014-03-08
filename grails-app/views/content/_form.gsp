@@ -4,7 +4,7 @@
 
 <div class="fieldcontain ${hasErrors(bean: contentInstance, field: 'name', 'error')} required">
 	<label for="name">
-		<g:message code="content.name.label" default="Name" />
+		Naam
 		<span class="required-indicator">*</span>
 	</label>
 	<g:textField name="name" required="" value="${contentInstance?.name}"/>
@@ -12,16 +12,17 @@
 
 <div class="fieldcontain ${hasErrors(bean: contentInstance, field: 'plural', 'error')} ">
 	<label for="plural">
-		<g:message code="content.plural.label" default="Plural" />
-		
+		Meervoud
 	</label>
 	<g:textField name="plural" value="${contentInstance?.plural}"/>
+	<p>
+	Laat leeg voor naam + en
+	</p>
 </div>
 
 <div class="fieldcontain ${hasErrors(bean: contentInstance, field: 'unit', 'error')} ">
 	<label for="unit">
-		<g:message code="content.unit.label" default="Unit" />
-		
+		Eenheid
 	</label>
 	<g:select id="unit" name="unit.id" from="${nl.jappieklooster.kook.quantification.Unit.list()}" optionKey="id" value="${contentInstance?.unit?.id}" class="many-to-one" noSelection="['null': '']"/>
 </div>

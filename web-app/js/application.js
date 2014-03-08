@@ -77,6 +77,19 @@ if (typeof jQuery !== 'undefined') {
 
 			}
 		});
+		// nice icons will be automaticly atached for certain paths
+		// I can't imagine why somoene does not want this so I did not
+		// create an ignore posibility
+		var atachIcon = function(linkPath, iconName){
+			$("a[href=\""+linkPath+"\"]").each(function(){
+				$(this).prepend("<span class='glyphicon glyphicon-"+iconName+"'></span>");
+			});
+		};
+		atachIcon("/kook/logout/index", "off");
+		atachIcon("/kook/login/index", "play");
+		atachIcon("/kook/content/create", "plus");
+
 	})(jQuery);
+
 }
 

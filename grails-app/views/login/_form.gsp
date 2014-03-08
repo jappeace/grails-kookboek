@@ -1,5 +1,9 @@
-<form method="POST" class="col-md-6 col-md-offset-3 form form-horizontal" action="/kook/j_spring_security_check">
+<sec:ifLoggedIn>
+	<p>U bent al ingelogd als: <sec:username/>, <g:link controller='logout'>Loguit</g:link> </p>
+</sec:ifLoggedIn>
+<sec:ifNotLoggedIn>
 
+<form method="POST" class="col-md-6 col-md-offset-3 form form-horizontal" action="/kook/j_spring_security_check">
 	<fieldset>
 		<legend>Login</legend>
 		<p>
@@ -16,3 +20,4 @@
 	</fieldset>
 	<input type="submit" value="Log in"/>
 </form>
+</sec:ifNotLoggedIn>

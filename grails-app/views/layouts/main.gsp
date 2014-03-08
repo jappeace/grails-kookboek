@@ -31,12 +31,15 @@
 						</li>
 					</g:each>
 				</ul>
+				<sec:ifLoggedIn>
+					<g:render contextPath="/cook" template="nav" />
+				</sec:ifLoggedIn>
 				<ul class="nav navbar-nav navbar-right">
 					<sec:ifLoggedIn>
 						<li>
-						</li>
-						<li>
-							 <g:link controller='logout'>Logout</g:link>
+							<g:link controller='logout'>
+								Logout
+							</g:link>
 						</li>
 					</sec:ifLoggedIn>
 					<sec:ifNotLoggedIn>
@@ -59,7 +62,13 @@
 			<g:layoutBody/>
 			</div>
 			<div class="footer col-md-12">
-				<small>Gemaakt door <a href="jappieklooster.nl">Jappie</a></small>
+				<small>Gemaakt door <a href="jappieklooster.nl">Jappie</a>
+				<!--
+					thanks to: 
+					http://grails.org/ for the entire framework
+					http://glyphicons.com/ for providing nice icons
+				-->
+				</small>
 			</div>
 			<div id="spinner" class="spinner" style="display:none;"><g:message code="spinner.alt" default="Loading&hellip;"/></div>
 			<r:layoutResources />

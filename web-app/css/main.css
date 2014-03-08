@@ -11,3 +11,6 @@ div.layoutBody{
     float: none;
     margin: 0 auto;	
 }
+.glyphicon{
+	margin-right:3px;
+}
