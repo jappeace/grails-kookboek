@@ -14,11 +14,23 @@ if (typeof jQuery !== 'undefined') {
 					$(select).data('options', options);
 
 					$(textbox).bind('change keyup', function() {
+							var result = $(select).val();
+							var candidates = $(valueHolder).val();
+							if(candidates !== null){
+								$(valueHolder).val().forEach(function(element){
+									$(select).find('option[value="'+element+'"]').each(function(){
+										// cant use the foreach index because the index will change with removal (yay lists)
+										var index = candidates.indexOf(element);
+										candidates.splice(index, 1);
+									});
+								});
+							}
+							if(result === null){
+								valueHolder.val(candidates);
+							}else{
+								valueHolder.val(result.concat(candidates));
+							}
 							var options = $(select).empty().data('options');
-							var setOptions = [];
-							$(select).find('option').each(function(){
-								setOptions.push($(this).val());
-							});
 							var search = $.trim($(this).val());
 							var regex = new RegExp(search,"gi");
 
@@ -86,7 +98,8 @@ if (typeof jQuery !== 'undefined') {
 		// nice icons will be automaticly atached for certain paths
 		// I can't imagine why somoene does not want this so I did not
 		// create an ignore posibility
-		var atachIcon = function(linkPath, iconName, operator = '='){
+		var atachIcon = function(linkPath, iconName, operator){
+			operator = typeof operator !== 'undefined' ? operator : "=";
 			$("a[href"+operator+"\""+linkPath+"\"]").each(function(){
 				$(this).prepend("<span class='glyphicon glyphicon-"+iconName+"'></span>");
 			});
