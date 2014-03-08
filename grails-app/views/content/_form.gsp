@@ -1,8 +1,7 @@
 <%@ page import="nl.jappieklooster.kook.book.Content" %>
-
-
-
-<div class="fieldcontain ${hasErrors(bean: contentInstance, field: 'name', 'error')} required">
+<fieldset>
+<legend>Text</legend>
+<div class="${hasErrors(bean: contentInstance, field: 'name', 'error')} required">
 	<label for="name">
 		Naam
 		<span class="required-indicator">*</span>
@@ -10,7 +9,7 @@
 	<g:textField name="name" required="" value="${contentInstance?.name}"/>
 </div>
 
-<div class="fieldcontain ${hasErrors(bean: contentInstance, field: 'plural', 'error')} ">
+<div class="${hasErrors(bean: contentInstance, field: 'plural', 'error')} ">
 	<label for="plural">
 		Meervoud
 	</label>
@@ -20,45 +19,86 @@
 	</p>
 </div>
 
-<div class="fieldcontain ${hasErrors(bean: contentInstance, field: 'unit', 'error')} ">
+<div class="${hasErrors(bean: contentInstance, field: 'description', 'error')} ">
+	<label for="description">
+		Bereidingswijze
+	</label>
+	<g:textArea name="description" value="${contentInstance?.description}"/>
+	<p>
+		Hierin dient stapsgewijz uit te worden gelegd hoe de ingredienten in het recept moeten worden bereid.
+		Kan worden overgeslagen voor ingredienten.
+	</p>
+</div>
+
+</fieldset>
+<fieldset>
+<legend>Relaties</legend>
+
+<div class=" ${hasErrors(bean: contentInstance, field: 'ingredients', 'error')} ">
+
+	<label for="ingredients">
+		Ingredienten
+	</label>
+	<div class="row">
+		<div class="col-md-9">
+		<g:select
+			name="ingredients"
+			from="${Content.list()}"
+			multiple="multiple"
+			optionKey="id"
+			size="5"
+			value="${contentInstance?.ingredients*.ingredient?.id}"
+			class="many-to-many filterable"
+		/>
+		</div>
+		<div class="col-md-3">
+			<label>
+				<span class="glyphicon glyphicon-search"></span>
+				Zoeken
+			</label>
+			<input type="text" class="filter" />
+		</div>
+	</div>
+	<ul>
+		<li>Houd control ('ctrl' links onderin) ingedrukt terwijl je klikt voor meerderen</li>
+		<li>Laat leeg om dit als ingredient te laten rekenen.</li>
+		<li>Recepten kunnen worden gekozen als ingredient.</li>
+	</ul>
+</div>
+
+<div class="${hasErrors(bean: contentInstance, field: 'unit', 'error')} ">
 	<label for="unit">
 		Eenheid
 	</label>
-	<g:select id="unit" name="unit.id" from="${nl.jappieklooster.kook.quantification.Unit.list()}" optionKey="id" value="${contentInstance?.unit?.id}" class="many-to-one" noSelection="['null': '']"/>
-</div>
-
-<g:if test="${contentInstance.ingredients != null}">
-
-	<div class="fieldcontain ${hasErrors(bean: contentInstance, field: 'ingredients', 'error')} ">
-
-		<label for="ingredients">
-			<g:message code="content.ingredients.label" default="Ingredients" />
-		</label>
-
-		<ul class="one-to-many">
-			<g:each in="${contentInstance?.ingredients?}" var="i">
-				<li><g:link controller="ingredient" action="show" id="${i.id}">${i?.encodeAsHTML()}</g:link></li>
-			</g:each>
-			<li class="add">
-			<g:link controller="ingredient" action="create" params="['recipe.id': contentInstance?.id]">${message(code: 'default.add.label', args: [message(code: 'ingredient.label', default: 'Ingredient')])}</g:link>
-			</li>
-		</ul>
+	<div class="row">
+		<div class="col-md-11">
+			<g:select id="unit" name="unit.id" from="${nl.jappieklooster.kook.quantification.Unit.list()}" optionKey="id" value="${contentInstance?.unit?.id}" class="many-to-one" noSelection="['null': '']"/>
+		</div>
+		<div class="col-md-1">
+		<g:link action="create" controller="unit"></g:link>
+		</div>
 	</div>
-</g:if>
-
-<div class="fieldcontain ${hasErrors(bean: contentInstance, field: 'description', 'error')} ">
-	<label for="description">
-		<g:message code="content.description.label" default="Description" />
-		
-	</label>
-	<g:textField name="description" value="${contentInstance?.description}"/>
 </div>
 
-<div class="fieldcontain ${hasErrors(bean: contentInstance, field: 'categories', 'error')} ">
+
+
+
+<div class="${hasErrors(bean: contentInstance, field: 'categories', 'error')} ">
 	<label for="categories">
-		<g:message code="content.categories.label" default="Categories" />
-		
+		Categorieen
 	</label>
-	<g:select name="categories" from="${nl.jappieklooster.kook.book.Category.list()}" multiple="multiple" optionKey="id" size="5" value="${contentInstance?.categories*.id}" class="many-to-many"/>
+	<div class="row">
+		<div class="col-md-11">
+		<g:select name="categories" from="${nl.jappieklooster.kook.book.Category.list()}" multiple="multiple" optionKey="id" size="5" value="${contentInstance?.categories*.id}" class="many-to-many"/>
+		</div>
+		<div class="col-md-1">
+		<g:link action="create" controller="category"></g:link>
+		</div>
+	</div>
+	<p>
+		Onder welke categorieen valt dit recept?
+		Dit is niet nodig voor ingredienten.
+	</p>
 </div>
 
+</fieldset>

@@ -8,7 +8,7 @@
 	<body>
 		<div id="create-content" class="content scaffold-create" role="main">
 			<h1>Maak</h1>
-			<p> Hier kunt u een recept of ingredient maken. Iets word gerekend als een recept als het ingredienten bevat, anders is het een ingredient </p>
+			<p> Hier kunt u een recept of ingredient maken. Iets word gerekend als een recept als het ingredienten bevat, anders is het een ingredient. Bijvoorbeeld een appel is een ingredient, omdat het geen ingredienten bevat. Maar een appeltaart is een recept omdat er appels in zitten</p>
 			<g:if test="${flash.message}">
 			<div class="message" role="status">${flash.message}</div>
 			</g:if>
