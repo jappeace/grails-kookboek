@@ -1,7 +1,7 @@
 <%@ page import="nl.jappieklooster.kook.book.Content" %>
 <fieldset>
 <legend>Text</legend>
-<div class="${hasErrors(bean: contentInstance, field: 'name', 'error')} required">
+<div class="form-group ${hasErrors(bean: contentInstance, field: 'name', 'has-error')} required">
 	<label for="name">
 		Naam
 		<span class="required-indicator">*</span>
@@ -9,7 +9,7 @@
 	<g:textField name="name" required="" value="${contentInstance?.name}"/>
 </div>
 
-<div class="${hasErrors(bean: contentInstance, field: 'plural', 'error')} ">
+<div class="form-group ${hasErrors(bean: contentInstance, field: 'plural', 'has-error')} ">
 	<label for="plural">
 		Meervoud
 	</label>
@@ -19,7 +19,7 @@
 	</p>
 </div>
 
-<div class="${hasErrors(bean: contentInstance, field: 'description', 'error')} ">
+<div class="form-group ${hasErrors(bean: contentInstance, field: 'description', 'has-error')} ">
 	<label for="description">
 		Bereidingswijze
 	</label>
@@ -34,7 +34,7 @@
 <fieldset>
 <legend>Relaties</legend>
 
-<div class=" ${hasErrors(bean: contentInstance, field: 'ingredients', 'error')} ">
+<div class="form-group ${hasErrors(bean: contentInstance, field: 'ingredients', 'has-error')} ">
 
 	<label for="ingredients">
 		Ingredienten
@@ -66,7 +66,7 @@
 	</ul>
 </div>
 
-<div class="${hasErrors(bean: contentInstance, field: 'unit', 'error')} ">
+<div class="form-group ${hasErrors(bean: contentInstance, field: 'unit', 'has-error')} ">
 	<label for="unit">
 		Eenheid
 	</label>
@@ -83,7 +83,7 @@
 
 
 
-<div class="${hasErrors(bean: contentInstance, field: 'categories', 'error')} ">
+<div class="form-group ${hasErrors(bean: contentInstance, field: 'categories', 'has-error')} ">
 	<label for="categories">
 		Categorieen
 	</label>

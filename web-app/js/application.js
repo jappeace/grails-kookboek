@@ -49,6 +49,13 @@ if (typeof jQuery !== 'undefined') {
 			};
 			//atach the filter function to inputs with specific classes
 			$('.filterable').filterByText($('.filter'));
+			// on form submit, make sure to let the filter be empty so all selected values are sent
+			$('.filterable').parents('form').submit(function(){
+				$('.filter').val("");
+				$('.filter').trigger('keyup');
+				alert("submit");
+			});
+
 		});
 		// check wether to aply default bootstrap styling
 		// allows escaping of styling by adding the ignore-defaults class to a element
