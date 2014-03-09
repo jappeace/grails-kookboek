@@ -25,30 +25,39 @@ class ContentController {
     }
 	private attachIngredients(Content contentInstance){
 
-		List<Ingredient> ingredients = new ArrayList<Ingredient>()
+		List<Ingredient> usrSelIngreds = new ArrayList<Ingredient>()
 
+		// construct a sane data structure
 		params["ingredientChoice"].each{
-			Ingredient toAdd = new Ingredient(
-					recipe: contentInstance,
-					ingredient: Content.findById(it)
-				)
-			int index = contentInstance.ingredients.indexOf(toAdd)
-			if(index > -1){
-				toAdd = contentInstance.ingredients.get(index)
-			}
-			ingredients.add(toAdd);
-		}
-
-		contentInstance.ingredients.clear()
-
-		params["ingredientChoice"].each{
-			contentInstance.ingredients.add(
+			usrSelIngreds.add(
 				new Ingredient(
 					recipe: contentInstance,
 					ingredient: Content.findById(it)
 				)
 			);
 		}
+		// delete evrything thats not in params from content instance (allows user to delete ingredients)
+		// otherwise delete the param (user input, because the old one contains more info)
+		List<Ingredient> ingredients = new ArrayList<Ingredient>(contentInstance.ingredients)
+
+		contentInstance.ingredients.each{
+			if(!usrSelIngreds.remove(it)){
+				ingredients.remove(it)
+			}
+		}
+
+		// add new ones
+		ingredients.addAll(usrSelIngreds)
+
+		// delete the deselected
+		contentInstance.ingredients.each{
+			if(!ingredients.contains(it)){
+				// don't care when
+				it.delete()
+			}
+		}
+		// overwrite with the correct ingredients
+		contentInstance.ingredients = new TreeSet(ingredients)
 	}
 
     @Transactional
