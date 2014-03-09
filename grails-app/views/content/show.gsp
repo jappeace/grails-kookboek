@@ -20,12 +20,22 @@
 			<div class="row">
 				<div class="col-md-6">
 				<g:if test="${contentInstance?.ingredients}">
-					<ul>
+					<ul class="ingredients-list">
 						<g:each in="${contentInstance.ingredients}" var="i">
 							<li aria-labelledby="ingredients-label">
+								<sec:ifLoggedIn>
+									<div class="input-group">
+									<input type="text" />
+									<span class="input-group-addon">
+								</sec:ifLoggedIn>
 								<g:link controller="content" action="show" id="${i.ingredient.id}">
 									${i?.encodeAsHTML()}
 								</g:link>
+								<sec:ifLoggedIn>
+									</span>
+									<input type="text" />
+									</div>
+								</sec:ifLoggedIn>
 							</li>
 						</g:each>
 					</ul>

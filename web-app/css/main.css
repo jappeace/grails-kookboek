@@ -14,3 +14,15 @@ div.layoutBody{
 .glyphicon{
 	margin-right:3px;
 }
+.input-group-addon a{
+	color: red;
+
+}
+.ingredients-list .input-group-addon{
+	width:50%;
+}
+.ingredients-list{
+	list-style:none;
+	margin:0;
+
+}

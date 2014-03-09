@@ -9,7 +9,6 @@ import grails.plugin.springsecurity.annotation.Secured
 class ContentController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
-
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
         respond Content.list(params), model:[contentInstanceCount: Content.count()]
@@ -23,6 +22,16 @@ class ContentController {
     def create() {
         respond new Content(params)
     }
+	private attachIngredients(Content contentInstance){
+		params["ingredientChoice"].each{
+			contentInstance.ingredients.add(
+				new Ingredient(
+					recipe: contentInstance,
+					ingredient: Content.findById(it)
+				)
+			);
+		}
+	}
 
     @Transactional
     def save(Content contentInstance) {
@@ -36,9 +45,10 @@ class ContentController {
             return
         }
 
+		attachIngredients(contentInstance)
         contentInstance.save flush:true
-
         request.withFormat {
+
             form {
                 flash.message = message(code: 'default.created.message', args: [message(code: 'contentInstance.label', default: 'Content'), contentInstance.id])
                 redirect contentInstance
@@ -63,6 +73,7 @@ class ContentController {
             return
         }
 
+		attachIngredients(contentInstance)
         contentInstance.save flush:true
 
         request.withFormat {

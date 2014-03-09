@@ -41,8 +41,11 @@
 	</label>
 	<div class="row">
 		<div class="col-md-9">
+		<!-- break convention naming because the way this is handled is to excotic for grails to do right
+			The ingredients model is never showed to user
+		-->
 		<g:select
-			name="ingredients"
+			name="ingredientChoice"
 			from="${Content.list()}"
 			multiple="multiple"
 			optionKey="id"
