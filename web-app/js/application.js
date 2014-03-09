@@ -53,7 +53,6 @@ if (typeof jQuery !== 'undefined') {
 			$('.filterable').parents('form').submit(function(){
 				$('.filter').val("");
 				$('.filter').trigger('keyup');
-				alert("submit");
 			});
 
 		});
