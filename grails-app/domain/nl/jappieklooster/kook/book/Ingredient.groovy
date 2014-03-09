@@ -6,7 +6,7 @@ import nl.jappieklooster.Echo
 * acts as an ingredient in a recipe
 * Ingredients are contents with possible prepends and amends, to describe the state of the ingredient
 */
-class Ingredient implements Comparable{
+class Ingredient implements Comparable<Ingredient>{
 	/** allows a small amount of text to be prepended to the ingredient*/
 	String prepend
 	/** allows a small amount of text to be ammended (insert after) the ingredient */
@@ -44,8 +44,18 @@ class Ingredient implements Comparable{
 	Ingredient(){
 		isShowingSubRecipe = false
 	}
-	int compareTo(obj){
-		toString().compareTo(obj.toString())
+	int compareTo(Ingredient to){
+		ingredient.compareTo(to.ingredient)
+	}
+	boolean equals(Object to){
+		if(!to instanceof Ingredient){
+			return false
+		}
+		Ingredient target = (Ingredient) to
+		if(target.is(this)){
+			return true
+		}
+		return target.recipe == this.recipe && target.ingredient == this.ingredient
 	}
 
 }

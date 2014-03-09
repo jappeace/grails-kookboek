@@ -77,19 +77,28 @@
 							</g:each>
 						</g:if>
 					</dl>
-				<sec:ifLoggedIn>
-				<div class="panel panel-primary">
-					<div class="panel-heading">
+					<sec:ifLoggedIn>
+					<div class="panel panel-primary">
+						<div class="panel-heading">
 
-						<h3 class="panel-title">Opties</h3>
+							<h3 class="panel-title">Kok opties</h3>
 
+						</div>
+						<div class="panel-body">
+
+						<g:link action="edit" controller="content" id="${contentInstance.id}">
+							Verander
+						</g:link><br />
+						<g:link action="delete" controller="content" id="${contentInstance.id}">
+							Verwijder
+						</g:link>
+						<p>
+							Doordat u bent ingelogd heeft u extra rechten. zoals deze inhoud veranderen of verwijderen
+							Daarnaast kunt u een stukje text voor of achter ingredienten invoegen, en hun hoeveelheid veanderen.
+						</p>
+						</div>
 					</div>
-					<div class="panel-body">
-					Pas aan <br />
-					Verwijder
-					</div>
-				</div>
-				</sec:ifLoggedIn>
+					</sec:ifLoggedIn>
 				</div>
 			</div>
 			<div class="row description">

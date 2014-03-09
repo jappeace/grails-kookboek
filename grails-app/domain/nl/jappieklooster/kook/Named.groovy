@@ -4,7 +4,7 @@ import nl.jappieklooster.Echo
 * Al classes that require naming should extend from this one.
 * Naming is somthing that happens a lot so I thought, why not pack the logic together
 */
-abstract class Named {
+abstract class Named implements Comparable<Named>{
 	// if plural is null, add this to name to get a plural
 	private static final String DEFAULT_PLURIFICATION = "en"
 	/** the singular name of somthing (for example one apple) */
@@ -26,5 +26,8 @@ abstract class Named {
 	String toString(){
 		// make sure the first letter is capitalized by default
 		return Echo.UpperCaseFirst(name)
+	}
+	int compareTo(Named to){
+		name.compareTo(to.name)
 	}
 }

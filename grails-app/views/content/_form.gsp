@@ -66,6 +66,7 @@
 		<li>Houd control ('ctrl' links onderin) ingedrukt terwijl je klikt voor meerderen</li>
 		<li>Laat leeg om dit als ingredient te laten rekenen.</li>
 		<li>Recepten kunnen worden gekozen als ingredient.</li>
+		<li>De hoeveelheden kunnen na het aanmaken worden aangepast</li>
 	</ul>
 </div>
 

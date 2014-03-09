@@ -4,6 +4,7 @@ import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
 import grails.plugin.springsecurity.annotation.Secured
 
+import nl.jappieklooster.Log
 @Secured(["ROLE_ADMIN", "ROLE_CHEF"])
 @Transactional(readOnly = true)
 class ContentController {
@@ -23,6 +24,26 @@ class ContentController {
         respond new Content(params)
     }
 	private attachIngredients(Content contentInstance){
+
+		List<Ingredient> ingredients = new ArrayList<Ingredient>()
+		params["ingredientChoice"].each{
+			ingredients.add(
+				new Ingredient(
+					recipe: contentInstance,
+					ingredient: Content.findById(it)
+				)
+			);
+		}
+		// delete evrything thats not in params from content instance (allows user to delete ingredients)
+		contentInstance.ingredients.each{
+			if(!ingredients.contains(it)){
+				Log.debug "delete {0}", it
+			}
+		}
+
+		// delete evrything from params that is already in content instance (allows prepended texts and amounts to remain the same)
+
+		// add the remainder of params to centent instance, (allows user to add new ingredients)
 		params["ingredientChoice"].each{
 			contentInstance.ingredients.add(
 				new Ingredient(
