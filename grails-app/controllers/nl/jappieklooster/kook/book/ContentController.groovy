@@ -26,27 +26,21 @@ class ContentController {
 	private attachIngredients(Content contentInstance){
 
 		List<Ingredient> ingredients = new ArrayList<Ingredient>()
+
 		params["ingredientChoice"].each{
-			ingredients.add(
-				new Ingredient(
+			Ingredient toAdd = new Ingredient(
 					recipe: contentInstance,
 					ingredient: Content.findById(it)
 				)
-			);
-		}
-		List<Ingredient> removeTargets = new ArrayList<Ingredient>()
-		// delete evrything thats not in params from content instance (allows user to delete ingredients)
-		contentInstance.ingredients.each{
-			if(!ingredients.contains(it)){
-				removeTargets.add(it)
+			int index = contentInstance.ingredients.indexOf(toAdd)
+			if(index > -1){
+				toAdd = contentInstance.ingredients.get(index)
 			}
+			ingredients.add(toAdd);
 		}
 
-		contentInstance.ingredients.removeAll(removeTargets)
+		contentInstance.ingredients.clear()
 
-		// delete evrything from params that is already in content instance (allows prepended texts and amounts to remain the same)
-
-		// add the remainder of params to centent instance, (allows user to add new ingredients)
 		params["ingredientChoice"].each{
 			contentInstance.ingredients.add(
 				new Ingredient(
