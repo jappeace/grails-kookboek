@@ -34,12 +34,15 @@ class ContentController {
 				)
 			);
 		}
+		List<Ingredient> removeTargets = new ArrayList<Ingredient>()
 		// delete evrything thats not in params from content instance (allows user to delete ingredients)
 		contentInstance.ingredients.each{
 			if(!ingredients.contains(it)){
-				Log.debug "delete {0}", it
+				removeTargets.add(it)
 			}
 		}
+
+		contentInstance.ingredients.removeAll(removeTargets)
 
 		// delete evrything from params that is already in content instance (allows prepended texts and amounts to remain the same)
 
