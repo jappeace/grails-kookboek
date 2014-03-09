@@ -18,7 +18,7 @@
 			</g:if>
 			</header>
 			<div class="row">
-				<div class="col-md-6">
+				<div class="col-md-8">
 				<g:if test="${contentInstance?.ingredients}">
 					<ul class="ingredients-list">
 						<g:each in="${contentInstance.ingredients}" var="i">
@@ -41,7 +41,7 @@
 					</ul>
 				</g:if>
 				</div>
-				<div class="col-md-6 well">
+				<div class="col-md-4 well">
 					<dl>
 						<g:if test="${contentInstance?.unit}">
 						<dt>
@@ -77,6 +77,19 @@
 							</g:each>
 						</g:if>
 					</dl>
+				<sec:ifLoggedIn>
+				<div class="panel panel-primary">
+					<div class="panel-heading">
+
+						<h3 class="panel-title">Opties</h3>
+
+					</div>
+					<div class="panel-body">
+					Pas aan <br />
+					Verwijder
+					</div>
+				</div>
+				</sec:ifLoggedIn>
 				</div>
 			</div>
 			<div class="row description">

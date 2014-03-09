@@ -67,7 +67,7 @@ if (typeof jQuery !== 'undefined') {
 		$("table").each(function() {
 
 			if(isDefaultElement($(this))){
-				$(this).addClass("table-striped");
+				$(this).addClass("table-striped table table-hover");
 			}
 
 		});

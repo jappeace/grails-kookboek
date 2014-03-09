@@ -5,10 +5,10 @@
 		</g:link>
 	</li>
 	<li>
-		<a href="#">
+		<g:link controller="cook" action="listAllContent">
 		<span class="glyphicon glyphicon-pencil"></span>
 		Verander
-		</a>
+		</g:link>
 
 	</li>
 
