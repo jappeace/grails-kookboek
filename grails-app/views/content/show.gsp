@@ -23,18 +23,32 @@
 					<ul class="ingredients-list">
 						<g:each in="${contentInstance.ingredients}" var="i">
 							<li aria-labelledby="ingredients-label">
-								<sec:ifLoggedIn>
-									<div class="input-group">
-									<input type="text" />
-									<span class="input-group-addon">
-								</sec:ifLoggedIn>
+								<sec:ifNotLoggedIn>
 								<g:link controller="content" action="show" id="${i.ingredient.id}">
 									${i?.encodeAsHTML()}
 								</g:link>
+								</sec:ifNotLoggedIn>
 								<sec:ifLoggedIn>
-									</span>
-									<input type="text" />
-									</div>
+								<g:form url="[resource:i, action:'update']" method="PUT">
+									<g:link controller="content" action="show" id="${i.ingredient.id}">
+										${i?.encodeAsHTML()}
+									</g:link>
+									<fieldset>
+										<label for="amount">Hoeveelheid</label>
+										<div class="input-group">
+											<input name="amount" value="${i.quantity}" type="number" />
+											<span class="input-group-addon">
+												<g:fieldValue bean="{i.ingredient.unit}" field="name" />
+										</div>
+
+										<label for="prepend">Voor text</label>
+										<input name="prepend" value="${i.prepend}"type="text" />
+
+										<label for="append">Achter text</label>
+										<input name="append" value="${i.ammend}"type="text" />
+									</fieldset>
+
+								</g:form>
 								</sec:ifLoggedIn>
 							</li>
 						</g:each>

@@ -12,6 +12,8 @@ class Ingredient implements Comparable<Ingredient>{
 	/** allows a small amount of text to be ammended (insert after) the ingredient */
 	String ammend
 
+	double quantity
+
 	/** should this ingredient show what the ingredient is made of (if its made of anything)*/
 	boolean isShowingSubRecipe
 
@@ -23,6 +25,7 @@ class Ingredient implements Comparable<Ingredient>{
 		prepend nullable:true
 		ammend nullable:true
     }
+	@Override
 	String toString(){
 		if(ingredient == null){
 			return ""
@@ -44,9 +47,11 @@ class Ingredient implements Comparable<Ingredient>{
 	Ingredient(){
 		isShowingSubRecipe = false
 	}
+	@Override
 	int compareTo(Ingredient to){
 		ingredient.compareTo(to.ingredient)
 	}
+	@Override
 	boolean equals(Object to){
 		if(!to instanceof Ingredient){
 			return false
