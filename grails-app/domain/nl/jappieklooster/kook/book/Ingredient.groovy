@@ -12,6 +12,13 @@ class Ingredient implements Comparable<Ingredient>{
 	/** allows a small amount of text to be ammended (insert after) the ingredient */
 	String ammend
 
+	/** allows the user to override the default unit that is attached to contents
+	* for example some recipes contain water, which can be measured with weight or with volume
+	* the default is volume in centi-liters but if you want weight you can use this field for overwriting
+	*/
+	Unit preferedUnit
+
+	/** the actual amount of this ingredient*/
 	double quantity
 
 	/** should this ingredient show what the ingredient is made of (if its made of anything)*/
@@ -24,6 +31,7 @@ class Ingredient implements Comparable<Ingredient>{
     static constraints = {
 		prepend nullable:true
 		ammend nullable:true
+		preferedUnit nullable:true
     }
 	@Override
 	String toString(){
