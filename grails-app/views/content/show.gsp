@@ -1,5 +1,6 @@
 
 <%@ page import="nl.jappieklooster.kook.book.Content" %>
+<%@ page import="nl.jappieklooster.kook.quantification.Unit" %>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -38,7 +39,8 @@
 										<div class="input-group">
 											<input name="amount" value="${i.quantity}" type="number" />
 											<span class="input-group-addon">
-												<g:fieldValue bean="{i.ingredient.unit}" field="name" />
+												${i.ingredient.unit.name.encodeAsHTML()}
+											</span>
 										</div>
 
 										<label for="prepend">Voor text</label>
