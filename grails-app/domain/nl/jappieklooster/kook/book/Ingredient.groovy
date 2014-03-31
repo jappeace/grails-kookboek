@@ -2,6 +2,7 @@ package nl.jappieklooster.kook.book
 import nl.jappieklooster.kook.Authored
 import org.apache.commons.lang3.text.WordUtils
 import nl.jappieklooster.Echo
+import nl.jappieklooster.kook.quantification.Unit
 /**
 * acts as an ingredient in a recipe
 * Ingredients are contents with possible prepends and amends, to describe the state of the ingredient
