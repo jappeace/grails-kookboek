@@ -34,41 +34,6 @@
 <fieldset>
 <legend>Relaties</legend>
 
-<div class="form-group ${hasErrors(bean: contentInstance, field: 'ingredients', 'has-error')} ">
-
-	<label for="ingredients">
-		Ingredienten
-	</label>
-	<div class="row">
-		<div class="col-md-9">
-		<!-- break convention naming because the way this is handled is to excotic for grails to do right
-			The ingredients model is never showed to user
-		-->
-		<g:select
-			name="ingredientChoice"
-			from="${Content.list()}"
-			multiple="multiple"
-			optionKey="id"
-			size="5"
-			value="${contentInstance?.ingredients*.ingredient?.id}"
-			class="many-to-many filterable"
-		/>
-		</div>
-		<div class="col-md-3">
-			<label>
-				<span class="glyphicon glyphicon-search"></span>
-				Zoeken
-			</label>
-			<input type="text" class="filter" />
-		</div>
-	</div>
-	<ul>
-		<li>Houd control ('ctrl' links onderin) ingedrukt terwijl je klikt voor meerderen</li>
-		<li>Laat leeg om dit als ingredient te laten rekenen.</li>
-		<li>Recepten kunnen worden gekozen als ingredient.</li>
-		<li>De hoeveelheden kunnen na het aanmaken worden aangepast</li>
-	</ul>
-</div>
 
 <div class="form-group ${hasErrors(bean: contentInstance, field: 'unit', 'has-error')} ">
 	<label for="unit">
@@ -104,5 +69,53 @@
 		Dit is niet nodig voor ingredienten.
 	</p>
 </div>
+</fieldset>
 
+<fieldset>
+<legend>Ingredienten</legend>
+<p>Als het gaat om een basis ingredient zoals water, dan kan deze stap worden overgeslagen</p>
+<div class="form-group ${hasErrors(bean: contentInstance, field: 'ingredients', 'has-error')} ">
+	<div class="selected-ingredients row">
+		<table>
+		<tr><th>Voortext</th><th>Hoeveelheid</th><th>Eenheid</th><th>Naam</th><th>Achtertext</th></tr>
+
+		<g:each in="${contentInstance.ingredients}" var="i"><tr>
+			<td>
+				<input name="ingredient.prepend" value="${i.prepend}"type="text" />
+			</td>
+			<td>
+				<input name="ingredient.amount" value="${i.quantity}" type="number" />
+			</td>
+			<td>
+				<g:select
+					name="ingredient.preferedUnit"
+					from="${nl.jappieklooster.kook.quantification.Unit.list()}"
+					optionKey="id"
+					value="${i?.preferedUnit?.id}"
+					class="many-to-one"
+					noSelection="['null': '']"
+				/>
+			</td>
+			<td>
+				${i?.encodeAsHTML()}
+			</td>
+			<td>
+				<input name="ingredient.ammend" value="${i.ammend}"type="text" />
+			</td>
+			</tr></g:each>
+		</table>
+	</div>
+	<div>
+
+	<div class="row">
+	<ul class="list-unstyled ingredients-choice">
+		<g:each in="${Content.where{!((id in contentInstance.ingredients*.ingredient.id) || (id == contentInstance.id))}.list()}" var="c">
+
+		<li>
+			<span class="glyphicon glyphicon-plus-sign"></span>${c.encodeAsHTML()}
+		</li>
+		</g:each>
+	</ul>
+	</div>
+</div>
 </fieldset>

@@ -26,3 +26,11 @@ div.layoutBody{
 	margin:0;
 
 }
+.ingredients-choice li{
+	margin-left: 2em;
+	margin-top:0.5px;
+}
+.ingredients-choice li .glyphicon{
+	margin-right: 1em;
+
+}
