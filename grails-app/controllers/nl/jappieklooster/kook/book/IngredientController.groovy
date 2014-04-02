@@ -5,101 +5,27 @@ package nl.jappieklooster.kook.book
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
 import grails.plugin.springsecurity.annotation.Secured
-
+import grails.converters.JSON
 @Secured(["ROLE_ADMIN", "ROLE_CHEF"])
 @Transactional(readOnly = true)
 class IngredientController {
-
-	static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
-
-	def index(Integer max) {
-		params.max = Math.min(max ?: 10, 100)
-		respond Ingredient.list(params), model:[ingredientInstanceCount: Ingredient.count()]
-	}
-
-	def show(Ingredient ingredientInstance) {
-		respond ingredientInstance
-	}
-
-	def create() {
-		respond new Ingredient(params)
-	}
-	@Transactional
-	def save(Ingredient ingredientInstance) {
-		if (ingredientInstance == null) {
-			notFound()
-			return
+	/** gives an json object with 2 arrays one contains all the contents that are an ingredient of the
+	* speciefied contentid the other one contains the rest.
+	* Both arrays do not contain the member itself
+	*/
+	def listMemberSeperation(Content content){
+		def result;
+		if(content){
+		 	result = [
+				member: Content.where{		id in content.ingredients*.ingredient.id}.list(),
+				other:  Content.where{!((	id in content.ingredients*.ingredient.id) || (id == content.id))}.list()
+			] as JSON
+		}else{
+		 	result = [
+				member: [],
+				other:  Content.list()
+			] as JSON
 		}
-
-		if (ingredientInstance.hasErrors()) {
-			respond ingredientInstance.errors, view:'create'
-			return
+		render result
 		}
-
-		ingredientInstance.save flush:true
-
-		request.withFormat {
-			form {
-				flash.message = message(code: 'default.created.message', args: [message(code: 'ingredientInstance.label', default: 'Ingredient'), ingredientInstance.id])
-				redirect ingredientInstance
-			}
-			'*' { respond ingredientInstance, [status: CREATED] }
-		}
-	}
-
-	def edit(Ingredient ingredientInstance) {
-		respond ingredientInstance
-	}
-
-	@Transactional
-	def update(Ingredient ingredientInstance) {
-		if (ingredientInstance == null) {
-			notFound()
-			return
-		}
-
-		if (ingredientInstance.hasErrors()) {
-			respond ingredientInstance.errors, view:'edit'
-			return
-		}
-
-		ingredientInstance.save flush:true
-
-		request.withFormat {
-			form {
-				flash.message = message(code: 'default.updated.message', args: [message(code: 'Ingredient.label', default: 'Ingredient'), ingredientInstance.id])
-				redirect ingredientInstance
-			}
-			'*'{ respond ingredientInstance, [status: OK] }
-		}
-	}
-
-	@Transactional
-	def delete(Ingredient ingredientInstance) {
-
-		if (ingredientInstance == null) {
-			notFound()
-			return
-		}
-
-		ingredientInstance.delete flush:true
-
-		request.withFormat {
-			form {
-				flash.message = message(code: 'default.deleted.message', args: [message(code: 'Ingredient.label', default: 'Ingredient'), ingredientInstance.id])
-				redirect action:"index", method:"GET"
-			}
-			'*'{ render status: NO_CONTENT }
-		}
-	}
-
-	protected void notFound() {
-		request.withFormat {
-			form {
-				flash.message = message(code: 'default.not.found.message', args: [message(code: 'ingredientInstance.label', default: 'Ingredient'), params.id])
-				redirect action: "index", method: "GET"
-			}
-			'*'{ render status: NOT_FOUND }
-		}
-	}
 }

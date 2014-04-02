@@ -76,15 +76,15 @@
 <p>Als het gaat om een basis ingredient zoals water, dan kan deze stap worden overgeslagen</p>
 <div class="form-group ${hasErrors(bean: contentInstance, field: 'ingredients', 'has-error')} ">
 	<div class="selected-ingredients row">
-		<table>
-		<tr><th>Voortext</th><th>Hoeveelheid</th><th>Eenheid</th><th>Naam</th><th>Achtertext</th></tr>
+		<table class="edit-ingredients">
+		<tr><th>Voortext</th><th>Hoeveelheid</th><th>Eenheid</th><th>Naam</th><th>Achtertext</th><th>Verwijder</th></tr>
 
 		<g:each in="${contentInstance.ingredients}" var="i"><tr>
 			<td>
-				<input name="ingredient.prepend" value="${i.prepend}"type="text" />
+				<input name="ingredients.prepend" value="${i.prepend}"type="text" />
 			</td>
 			<td>
-				<input name="ingredient.amount" value="${i.quantity}" type="number" />
+				<input name="ingredients.amount" value="${i.quantity}" type="number" />
 			</td>
 			<td>
 				<g:select
@@ -100,7 +100,11 @@
 				${i?.encodeAsHTML()}
 			</td>
 			<td>
-				<input name="ingredient.ammend" value="${i.ammend}"type="text" />
+				<input name="ingredients.ammend" value="${i.ammend}"type="text" />
+			</td>
+			<td>
+				<span class="glyphicon glyphicon-minus-sign"></span>
+				<input name="ingredients.ingredient.id" type="hidden" value="${i.ingredient.id}" />
 			</td>
 			</tr></g:each>
 		</table>
@@ -119,3 +123,5 @@
 	</div>
 </div>
 </fieldset>
+<%--kick in the javascript to generate the select ingredient stuff--%>
+<g:javascript src="ingredients-editor.js" />
