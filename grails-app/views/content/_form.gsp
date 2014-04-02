@@ -77,7 +77,7 @@
 <div class="form-group ${hasErrors(bean: contentInstance, field: 'ingredients', 'has-error')} ">
 	<div class="selected-ingredients row">
 		<table class="edit-ingredients">
-		<tr><th>Voortext</th><th>Hoeveelheid</th><th>Eenheid</th><th>Naam</th><th>Achtertext</th><th>Verwijder</th></tr>
+		<tr><th class="col-md-2">Voortext</th><th class="col-md-1">Hoeveelheid</th><th class="col-md-3">Eenheid</th><th class="col-md-3">Naam</th><th class="col-md-2">Achtertext</th><th class="col-md-1"> Verwijder</th></tr>
 
 		<g:each in="${contentInstance.ingredients}" var="i"><tr>
 			<td>
@@ -91,9 +91,8 @@
 					name="ingredient.preferedUnit"
 					from="${nl.jappieklooster.kook.quantification.Unit.list()}"
 					optionKey="id"
-					value="${i?.preferedUnit?.id}"
+					value="${i.preferedUnit?.id ?: i.ingredient.unit.id}"
 					class="many-to-one"
-					noSelection="['null': '']"
 				/>
 			</td>
 			<td>
@@ -123,5 +122,8 @@
 	</div>
 </div>
 </fieldset>
-<%--kick in the javascript to generate the select ingredient stuff--%>
-<g:javascript src="ingredients-editor.js" />
+<div class="hidden">
+	<%--kick in the javascript to generate the select ingredient stuff--%>
+	<span id="contentInstance-id"><g:fieldValue bean="${contentInstance}" field="id" /></span>
+	<g:javascript src="ingredients-editor.js" />
+</div>
