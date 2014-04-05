@@ -11,7 +11,7 @@ class ${className}Controller {
 		edit:[
 			'GET',
 			'POST'
-		]
+		],
 		save:'POST',
 		update:[
 			'POST',
@@ -34,12 +34,13 @@ class ${className}Controller {
 		withFormat {
 			html listObject
 			json {
-			if (list){
-				render list as JSON
-			}
-			else {
-				response.status = 204
-				render ''
+				if (list){
+					render list as JSON
+				}
+				else {
+					response.status = 204
+					render ''
+				}
 			}
 		}
 	}
@@ -90,7 +91,7 @@ class ${className}Controller {
 				flash.message = message(code: 'default.not.found.message', args: [message(code: '${domainClass.propertyName}.label', default: '${className}'), id])
 				redirect(action: "list")
 			}
-			json
+			json {
 				response.sendError(404)
 			}
 		}
