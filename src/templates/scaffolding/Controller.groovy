@@ -1,8 +1,11 @@
 <%=packageName ? "package ${packageName}\n\n" : ''%>import org.springframework.dao.DataIntegrityViolationException
 
 import grails.converters.JSON
+import grails.transaction.Transactional
+import grails.plugin.springsecurity.annotation.Secured
 
-
+@Secured(["ROLE_ADMIN"])
+@Transactional(readOnly = true)
 class ${className}Controller {
 
 	static allowedMethods = [
@@ -23,11 +26,7 @@ class ${className}Controller {
 		]
 	]
 
-	def index() {
-		redirect(action: "list", params: params)
-	}
-
-	def list(Integer max) {
+	def index(Integer max) {
 		params.max = Math.min(max ?: 10, 100)
 		def list = ${className}.list(params)
 		def listObject = [${propertyName}List: list, ${propertyName}Total: ${className}.count()]
@@ -45,10 +44,39 @@ class ${className}Controller {
 		}
 	}
 
+	def list() {
+		redirect(action: "index", params: params)
+	}
+
+	def show(Long id) {
+		def ${propertyName} = ${className}.get(id)
+		if (!${propertyName}) {
+		withFormat {
+			html {
+				flash.message = message(code: 'default.not.found.message', args: [message(code: '${domainClass.propertyName}.label', default: '${className}'), id])
+				redirect(action: "list")
+			}
+			json {
+				response.sendError(404)
+			}
+		}
+		return
+		}
+		withFormat {
+			html {[
+				${propertyName}: ${propertyName}
+			]}
+			json {
+				render ${propertyName} as JSON
+			}
+		}
+	}
+
 	def create() {
 		[${propertyName}: new ${className}(params)]
 	}
 
+    @Transactional
 	def save() {
 		def ${propertyName} = new ${className}(params)
 		if (!${propertyName}.save(flush: true)) {
@@ -83,30 +111,6 @@ class ${className}Controller {
 		}
 	}
 
-	def show(Long id) {
-		def ${propertyName} = ${className}.get(id)
-		if (!${propertyName}) {
-		withFormat {
-			html {
-				flash.message = message(code: 'default.not.found.message', args: [message(code: '${domainClass.propertyName}.label', default: '${className}'), id])
-				redirect(action: "list")
-			}
-			json {
-				response.sendError(404)
-			}
-		}
-		return
-		}
-		withFormat {
-			html {[
-				${propertyName}: ${propertyName}
-			]}
-			json {
-				render ${propertyName} as JSON
-			}
-		}
-	}
-
 	def edit(Long id) {
 		def ${propertyName} = ${className}.get(id)
 		if (!${propertyName}) {
@@ -117,6 +121,7 @@ class ${className}Controller {
 		[${propertyName}: ${propertyName}]
 	}
 
+    @Transactional
 	def update(Long id, Long version) {
 		def ${propertyName} = ${className}.get(id)
 		if (!${propertyName}) {
@@ -184,6 +189,7 @@ class ${className}Controller {
 		}
 	}
 
+    @Transactional
 	def delete(Long id) {
 		def ${propertyName} = ${className}.get(id)
 			if (!${propertyName}) {

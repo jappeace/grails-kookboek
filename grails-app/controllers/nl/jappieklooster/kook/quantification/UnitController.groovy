@@ -2,10 +2,12 @@ package nl.jappieklooster.kook.quantification
 
 import org.springframework.dao.DataIntegrityViolationException
 
-import grails.plugin.springsecurity.annotation.Secured
 import grails.converters.JSON
+import grails.transaction.Transactional
+import grails.plugin.springsecurity.annotation.Secured
 
 @Secured(["ROLE_ADMIN"])
+@Transactional(readOnly = true)
 class UnitController {
 
 	static allowedMethods = [
@@ -26,11 +28,7 @@ class UnitController {
 		]
 	]
 
-	def index() {
-		redirect(action: "list", params: params)
-	}
-
-	def list(Integer max) {
+	def index(Integer max) {
 		params.max = Math.min(max ?: 10, 100)
 		def list = Unit.list(params)
 		def listObject = [unitInstanceList: list, unitInstanceTotal: Unit.count()]
@@ -48,10 +46,39 @@ class UnitController {
 		}
 	}
 
+	def list() {
+		redirect(action: "index", params: params)
+	}
+
+	def show(Long id) {
+		def unitInstance = Unit.get(id)
+		if (!unitInstance) {
+		withFormat {
+			html {
+				flash.message = message(code: 'default.not.found.message', args: [message(code: 'unit.label', default: 'Unit'), id])
+				redirect(action: "list")
+			}
+			json {
+				response.sendError(404)
+			}
+		}
+		return
+		}
+		withFormat {
+			html {[
+				unitInstance: unitInstance
+			]}
+			json {
+				render unitInstance as JSON
+			}
+		}
+	}
+
 	def create() {
 		[unitInstance: new Unit(params)]
 	}
 
+    @Transactional
 	def save() {
 		def unitInstance = new Unit(params)
 		if (!unitInstance.save(flush: true)) {
@@ -86,30 +113,6 @@ class UnitController {
 		}
 	}
 
-	def show(Long id) {
-		def unitInstance = Unit.get(id)
-		if (!unitInstance) {
-		withFormat {
-			html {
-				flash.message = message(code: 'default.not.found.message', args: [message(code: 'unit.label', default: 'Unit'), id])
-				redirect(action: "list")
-			}
-			json {
-				response.sendError(404)
-			}
-		}
-		return
-		}
-		withFormat {
-			html {[
-				unitInstance: unitInstance
-			]}
-			json {
-				render unitInstance as JSON
-			}
-		}
-	}
-
 	def edit(Long id) {
 		def unitInstance = Unit.get(id)
 		if (!unitInstance) {
@@ -120,6 +123,7 @@ class UnitController {
 		[unitInstance: unitInstance]
 	}
 
+    @Transactional
 	def update(Long id, Long version) {
 		def unitInstance = Unit.get(id)
 		if (!unitInstance) {
@@ -136,6 +140,8 @@ class UnitController {
 		}
 		if (version != null) {
 			if (unitInstance.version > version) {
+
+				
 				unitInstance.errors.rejectValue("version", "default.optimistic.locking.failure",
 				[message(code: 'unit.label', default: 'Unit')] as Object[],
 				"Another user has updated this Unit while you were editing")
@@ -185,6 +191,7 @@ class UnitController {
 		}
 	}
 
+    @Transactional
 	def delete(Long id) {
 		def unitInstance = Unit.get(id)
 			if (!unitInstance) {
