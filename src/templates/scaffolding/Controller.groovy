@@ -1,102 +1,225 @@
-<%=packageName ? "package ${packageName}\n\n" : ''%>
+<%=packageName ? "package ${packageName}\n\n" : ''%>import org.springframework.dao.DataIntegrityViolationException
 
-import static org.springframework.http.HttpStatus.*
-import grails.transaction.Transactional
+import grails.converters.JSON
 
-@Transactional(readOnly = true)
+
 class ${className}Controller {
 
-    static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
+	static allowedMethods = [
+		list:'GET',
+		show:'GET',
+		edit:[
+			'GET',
+			'POST'
+		]
+		save:'POST',
+		update:[
+			'POST',
+			'PUT'
+		],
+		delete:[
+			'POST',
+			'DELETE'
+		]
+	]
 
-    def index(Integer max) {
-        params.max = Math.min(max ?: 10, 100)
-        respond ${className}.list(params), model:[${propertyName}Count: ${className}.count()]
-    }
+	def index() {
+		redirect(action: "list", params: params)
+	}
 
-    def show(${className} ${propertyName}) {
-        respond ${propertyName}
-    }
+	def list(Integer max) {
+		params.max = Math.min(max ?: 10, 100)
+		def list = ${className}.list(params)
+		def listObject = [${propertyName}List: list, ${propertyName}Total: ${className}.count()]
+		withFormat {
+			html listObject
+			json {
+			if (list){
+				render list as JSON
+			}
+			else {
+				response.status = 204
+				render ''
+			}
+		}
+	}
 
-    def create() {
-        respond new ${className}(params)
-    }
+	def create() {
+		[${propertyName}: new ${className}(params)]
+	}
 
-    @Transactional
-    def save(${className} ${propertyName}) {
-        if (${propertyName} == null) {
-            notFound()
-            return
-        }
+	def save() {
+		def ${propertyName} = new ${className}(params)
+		if (!${propertyName}.save(flush: true)) {
+			withFormat {
+				html {
+					render(
+						view: "create",
+						model: [
+							${propertyName}: ${propertyName}
+						]
+					)
+				}
+				json {
+					response.status = 400
+					render ${propertyName}.errors as JSON
+				}
+			}
+			return
+		}
+		withFormat {
+			html {
+				flash.message = message(code: 'default.created.message', args: [message(code: '${domainClass.propertyName}.label', default: '${className}'), ${propertyName}.id])
+				redirect(
+					action: "show",
+					id: ${propertyName}.id
+				)
+			}
+			json {
+				response.status = 201
+				render ${propertyName} as JSON
+			}
+		}
+	}
 
-        if (${propertyName}.hasErrors()) {
-            respond ${propertyName}.errors, view:'create'
-            return
-        }
+	def show(Long id) {
+		def ${propertyName} = ${className}.get(id)
+		if (!${propertyName}) {
+		withFormat {
+			html {
+				flash.message = message(code: 'default.not.found.message', args: [message(code: '${domainClass.propertyName}.label', default: '${className}'), id])
+				redirect(action: "list")
+			}
+			json
+				response.sendError(404)
+			}
+		}
+		return
+		}
+		withFormat {
+			html {[
+				${propertyName}: ${propertyName}
+			]}
+			json {
+				render ${propertyName} as JSON
+			}
+		}
+	}
 
-        ${propertyName}.save flush:true
+	def edit(Long id) {
+		def ${propertyName} = ${className}.get(id)
+		if (!${propertyName}) {
+			flash.message = message(code: 'default.not.found.message', args: [message(code: '${domainClass.propertyName}.label', default: '${className}'), id])
+			redirect(action: "list")
+			return
+		}
+		[${propertyName}: ${propertyName}]
+	}
 
-        request.withFormat {
-            form {
-                flash.message = message(code: 'default.created.message', args: [message(code: '${propertyName}.label', default: '${className}'), ${propertyName}.id])
-                redirect ${propertyName}
-            }
-            '*' { respond ${propertyName}, [status: CREATED] }
-        }
-    }
+	def update(Long id, Long version) {
+		def ${propertyName} = ${className}.get(id)
+		if (!${propertyName}) {
+			withFormat {
+				html {
+					flash.message = message(code: 'default.not.found.message', args: [message(code: '${domainClass.propertyName}.label', default: '${className}'), params.id])
+					redirect(action:"list")
+				}
+				json {
+					response.sendError(404)
+				}
+			}
+			return
+		}
+		if (version != null) {
+			if (${propertyName}.version > version) {
 
-    def edit(${className} ${propertyName}) {
-        respond ${propertyName}
-    }
+				<% def lowerCaseName = grails.util.GrailsNameUtils.getPropertyName(className) %>
+				${propertyName}.errors.rejectValue("version", "default.optimistic.locking.failure",
+				[message(code: '${domainClass.propertyName}.label', default: '${className}')] as Object[],
+				"Another user has updated this ${className} while you were editing")
 
-    @Transactional
-    def update(${className} ${propertyName}) {
-        if (${propertyName} == null) {
-            notFound()
-            return
-        }
+				withFormat {
+					html {
+						render(
+							view: "edit",
+							model: [
+								${propertyName}: ${propertyName}
+							]
+						)
+					}
+					json {
+						response.sendError(409)
+					}
+				}
+				return
+			}
+		}
+		${propertyName}.properties = params
+		if (!${propertyName}.save(flush: true)) {
+			withFormat {
+				html {
+					render(
+						view: "edit",
+						model: [
+							${propertyName}: ${propertyName}
+						]
+					)
+				}
+				json {
+					response.status = 400
+					render ${propertyName}.errors as JSON
+				}
+			}
+			return
+		}
+		withFormat {
+			html {
+				flash.message = message(code: 'default.updated.message', args: [message(code: '${domainClass.propertyName}.label', default: '${className}'), ${propertyName}.id])
+				redirect(action: "show", id: ${propertyName}.id)
+			}
+			json {
+				render ${propertyName} as JSON
+			}
+		}
+	}
 
-        if (${propertyName}.hasErrors()) {
-            respond ${propertyName}.errors, view:'edit'
-            return
-        }
-
-        ${propertyName}.save flush:true
-
-        request.withFormat {
-            form {
-                flash.message = message(code: 'default.updated.message', args: [message(code: '${className}.label', default: '${className}'), ${propertyName}.id])
-                redirect ${propertyName}
-            }
-            '*'{ respond ${propertyName}, [status: OK] }
-        }
-    }
-
-    @Transactional
-    def delete(${className} ${propertyName}) {
-
-        if (${propertyName} == null) {
-            notFound()
-            return
-        }
-
-        ${propertyName}.delete flush:true
-
-        request.withFormat {
-            form {
-                flash.message = message(code: 'default.deleted.message', args: [message(code: '${className}.label', default: '${className}'), ${propertyName}.id])
-                redirect action:"index", method:"GET"
-            }
-            '*'{ render status: NO_CONTENT }
-        }
-    }
-
-    protected void notFound() {
-        request.withFormat {
-            form {
-                flash.message = message(code: 'default.not.found.message', args: [message(code: '${propertyName}.label', default: '${className}'), params.id])
-                redirect action: "index", method: "GET"
-            }
-            '*'{ render status: NOT_FOUND }
-        }
-    }
+	def delete(Long id) {
+		def ${propertyName} = ${className}.get(id)
+			if (!${propertyName}) {
+				withFormat {
+				html {
+					flash.message = message(code: 'default.not.found.message', args: [message(code: '${domainClass.propertyName}.label', default: '${className}'), id])
+					redirect(action: "list")
+				}
+				json {
+					response.sendError(404)
+				}
+			}
+		return
+		}
+		try {
+			${propertyName}.delete(flush: true)
+			withFormat {
+				html {
+					flash.message = message(code: 'default.deleted.message', args: [message(code: '${domainClass.propertyName}.label', default: '${className}'), id])
+					redirect(action: "list")
+				}
+				json {
+					response.status = 204
+					render ''
+				}
+			}
+		}
+		catch (DataIntegrityViolationException e) {
+			withFormat {
+				html {
+					flash.message = message(code: 'default.not.deleted.message', args: [message(code: '${domainClass.propertyName}.label', default: '${className}'), id])
+					redirect(action: "show", id: id)
+				}
+				json {
+					response.sendError(500)
+				}
+			}
+		}
+	}
 }
