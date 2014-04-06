@@ -1,8 +1,8 @@
 package nl.jappieklooster.kook.book
 
+import org.springframework.dao.DataIntegrityViolationException
 
-
-import static org.springframework.http.HttpStatus.*
+import grails.converters.JSON
 import grails.transaction.Transactional
 import grails.plugin.springsecurity.annotation.Secured
 
@@ -10,103 +10,225 @@ import grails.plugin.springsecurity.annotation.Secured
 @Transactional(readOnly = true)
 class CategoryController {
 
-    static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
+	static allowedMethods = [
+		list:'GET',
+		show:'GET',
+		edit:[
+			'GET',
+			'POST'
+		],
+		save:'POST',
+		update:[
+			'POST',
+			'PUT'
+		],
+		delete:[
+			'POST',
+			'DELETE'
+		]
+	]
 
-    def index(Integer max) {
-        params.max = Math.min(max ?: 10, 100)
-        respond Category.list(params), model:[categoryInstanceCount: Category.count()]
-    }
-	@Secured(["permitAll"])
-    def choose() {
-	 		// only allow choiche between the root categories
-        respond Category.findRoots()
-    }
+	def index(Integer max) {
+		params.max = Math.min(max ?: 10, 100)
+		def list = Category.list(params)
+		def listObject = [categoryInstanceList: list, categoryInstanceTotal: Category.count()]
+		withFormat {
+			html listObject
+			json {
+				if (list){
+					render list as JSON
+				}
+				else {
+					response.status = 204
+					render ''
+				}
+			}
+		}
+	}
 
-	@Secured(["permitAll"])
-    def show(Category categoryInstance) {
-        respond categoryInstance
-    }
+	def list() {
+		redirect(action: "index", params: params)
+	}
 
-    def create() {
-        respond new Category(params)
-    }
+	def show(Long id) {
+		def categoryInstance = Category.get(id)
+		if (!categoryInstance) {
+		withFormat {
+			html {
+				flash.message = message(code: 'default.not.found.message', args: [message(code: 'category.label', default: 'Category'), id])
+				redirect(action: "list")
+			}
+			json {
+				response.sendError(404)
+			}
+		}
+		return
+		}
+		withFormat {
+			html {[
+				categoryInstance: categoryInstance
+			]}
+			json {
+				render categoryInstance as JSON
+			}
+		}
+	}
 
-    @Transactional
-    def save(Category categoryInstance) {
-        if (categoryInstance == null) {
-            notFound()
-            return
-        }
-
-        if (categoryInstance.hasErrors()) {
-            respond categoryInstance.errors, view:'create'
-            return
-        }
-
-        categoryInstance.save flush:true
-
-        request.withFormat {
-            form {
-                flash.message = message(code: 'default.created.message', args: [message(code: 'categoryInstance.label', default: 'Category'), categoryInstance.id])
-                redirect categoryInstance
-            }
-            '*' { respond categoryInstance, [status: CREATED] }
-        }
-    }
-
-    def edit(Category categoryInstance) {
-        respond categoryInstance
-    }
-
-    @Transactional
-    def update(Category categoryInstance) {
-        if (categoryInstance == null) {
-            notFound()
-            return
-        }
-
-        if (categoryInstance.hasErrors()) {
-            respond categoryInstance.errors, view:'edit'
-            return
-        }
-
-        categoryInstance.save flush:true
-
-        request.withFormat {
-            form {
-                flash.message = message(code: 'default.updated.message', args: [message(code: 'Category.label', default: 'Category'), categoryInstance.id])
-                redirect categoryInstance
-            }
-            '*'{ respond categoryInstance, [status: OK] }
-        }
-    }
+	def create() {
+		[categoryInstance: new Category(params)]
+	}
 
     @Transactional
-    def delete(Category categoryInstance) {
+	def save() {
+		def categoryInstance = new Category(params)
+		if (!categoryInstance.save(flush: true)) {
+			withFormat {
+				html {
+					render(
+						view: "create",
+						model: [
+							categoryInstance: categoryInstance
+						]
+					)
+				}
+				json {
+					response.status = 400
+					render categoryInstance.errors as JSON
+				}
+			}
+			return
+		}
+		withFormat {
+			html {
+				flash.message = message(code: 'default.created.message', args: [message(code: 'category.label', default: 'Category'), categoryInstance.id])
+				redirect(
+					action: "show",
+					id: categoryInstance.id
+				)
+			}
+			json {
+				response.status = 201
+				render categoryInstance as JSON
+			}
+		}
+	}
 
-        if (categoryInstance == null) {
-            notFound()
-            return
-        }
+	def edit(Long id) {
+		def categoryInstance = Category.get(id)
+		if (!categoryInstance) {
+			flash.message = message(code: 'default.not.found.message', args: [message(code: 'category.label', default: 'Category'), id])
+			redirect(action: "list")
+			return
+		}
+		[categoryInstance: categoryInstance]
+	}
 
-        categoryInstance.delete flush:true
+    @Transactional
+	def update(Long id, Long version) {
+		def categoryInstance = Category.get(id)
+		if (!categoryInstance) {
+			withFormat {
+				html {
+					flash.message = message(code: 'default.not.found.message', args: [message(code: 'category.label', default: 'Category'), params.id])
+					redirect(action:"list")
+				}
+				json {
+					response.sendError(404)
+				}
+			}
+			return
+		}
+		if (version != null) {
+			if (categoryInstance.version > version) {
 
-        request.withFormat {
-            form {
-                flash.message = message(code: 'default.deleted.message', args: [message(code: 'Category.label', default: 'Category'), categoryInstance.id])
-                redirect action:"index", method:"GET"
-            }
-            '*'{ render status: NO_CONTENT }
-        }
-    }
+				
+				categoryInstance.errors.rejectValue("version", "default.optimistic.locking.failure",
+				[message(code: 'category.label', default: 'Category')] as Object[],
+				"Another user has updated this Category while you were editing")
 
-    protected void notFound() {
-        request.withFormat {
-            form {
-                flash.message = message(code: 'default.not.found.message', args: [message(code: 'categoryInstance.label', default: 'Category'), params.id])
-                redirect action: "index", method: "GET"
-            }
-            '*'{ render status: NOT_FOUND }
-        }
-    }
+				withFormat {
+					html {
+						render(
+							view: "edit",
+							model: [
+								categoryInstance: categoryInstance
+							]
+						)
+					}
+					json {
+						response.sendError(409)
+					}
+				}
+				return
+			}
+		}
+		categoryInstance.properties = params
+		if (!categoryInstance.save(flush: true)) {
+			withFormat {
+				html {
+					render(
+						view: "edit",
+						model: [
+							categoryInstance: categoryInstance
+						]
+					)
+				}
+				json {
+					response.status = 400
+					render categoryInstance.errors as JSON
+				}
+			}
+			return
+		}
+		withFormat {
+			html {
+				flash.message = message(code: 'default.updated.message', args: [message(code: 'category.label', default: 'Category'), categoryInstance.id])
+				redirect(action: "show", id: categoryInstance.id)
+			}
+			json {
+				render categoryInstance as JSON
+			}
+		}
+	}
+
+    @Transactional
+	def delete(Long id) {
+		def categoryInstance = Category.get(id)
+			if (!categoryInstance) {
+				withFormat {
+				html {
+					flash.message = message(code: 'default.not.found.message', args: [message(code: 'category.label', default: 'Category'), id])
+					redirect(action: "list")
+				}
+				json {
+					response.sendError(404)
+				}
+			}
+		return
+		}
+		try {
+			categoryInstance.delete(flush: true)
+			withFormat {
+				html {
+					flash.message = message(code: 'default.deleted.message', args: [message(code: 'category.label', default: 'Category'), id])
+					redirect(action: "list")
+				}
+				json {
+					response.status = 204
+					render ''
+				}
+			}
+		}
+		catch (DataIntegrityViolationException e) {
+			withFormat {
+				html {
+					flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'category.label', default: 'Category'), id])
+					redirect(action: "show", id: id)
+				}
+				json {
+					response.sendError(500)
+				}
+			}
+		}
+	}
 }

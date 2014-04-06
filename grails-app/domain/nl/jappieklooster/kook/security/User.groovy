@@ -39,12 +39,13 @@ class User {
 	protected void encodePassword() {
 		password = springSecurityService.encodePassword(password)
 	}
-	void saveAndBindRoles(def selectedRoles){
-        save flush:true
+	void boolean saveAndBindRoles(def selectedRoles){
+        boolean result = save flush:true
 		UserRole.removeAll this
 		selectedRoles.each{ role ->
 			UserRole.create this, Role.findById(role)
 		}
+		return result
 	}
 	String toString(){
 		return username

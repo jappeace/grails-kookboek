@@ -1,29 +1,238 @@
 package nl.jappieklooster.kook.book
 
-import static org.springframework.http.HttpStatus.*
+import org.springframework.dao.DataIntegrityViolationException
+
+import grails.converters.JSON
 import grails.transaction.Transactional
 import grails.plugin.springsecurity.annotation.Secured
 
-import nl.jappieklooster.Log
-@Secured(["ROLE_ADMIN", "ROLE_CHEF"])
+@Secured(["ROLE_ADMIN"])
 @Transactional(readOnly = true)
 class ContentController {
 
-    static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
-    def index(Integer max) {
-        params.max = Math.min(max ?: 10, 100)
-        respond Content.list(params), model:[contentInstanceCount: Content.count()]
-    }
+	static allowedMethods = [
+		list:'GET',
+		show:'GET',
+		edit:[
+			'GET',
+			'POST'
+		],
+		save:'POST',
+		update:[
+			'POST',
+			'PUT'
+		],
+		delete:[
+			'POST',
+			'DELETE'
+		]
+	]
 
-	@Secured(["permitAll"])
-    def show(Content contentInstance) {
-        respond contentInstance
-    }
+	def index(Integer max) {
+		params.max = Math.min(max ?: 10, 100)
+		def list = Content.list(params)
+		def listObject = [contentInstanceList: list, contentInstanceTotal: Content.count()]
+		withFormat {
+			html listObject
+			json {
+				if (list){
+					render list as JSON
+				}
+				else {
+					response.status = 204
+					render ''
+				}
+			}
+		}
+	}
 
-    def create() {
-        respond new Content(params)
-    }
-	private attachIngredients(Content contentInstance){
+	def list() {
+		redirect(action: "index", params: params)
+	}
+
+	def show(Long id) {
+		def contentInstance = Content.get(id)
+		if (!contentInstance) {
+		withFormat {
+			html {
+				flash.message = message(code: 'default.not.found.message', args: [message(code: 'content.label', default: 'Content'), id])
+				redirect(action: "list")
+			}
+			json {
+				response.sendError(404)
+			}
+		}
+		return
+		}
+		withFormat {
+			html {[
+				contentInstance: contentInstance
+			]}
+			json {
+				render contentInstance as JSON
+			}
+		}
+	}
+
+	def create() {
+		[contentInstance: new Content(params)]
+	}
+
+    @Transactional
+	def save() {
+		def contentInstance = new Content(params)
+		if (!contentInstance.save(flush: true)) {
+			withFormat {
+				html {
+					render(
+						view: "create",
+						model: [
+							contentInstance: contentInstance
+						]
+					)
+				}
+				json {
+					response.status = 400
+					render contentInstance.errors as JSON
+				}
+			}
+			return
+		}
+		attachIngredients(contentInstance);
+		withFormat {
+			html {
+				flash.message = message(code: 'default.created.message', args: [message(code: 'content.label', default: 'Content'), contentInstance.id])
+				redirect(
+					action: "show",
+					id: contentInstance.id
+				)
+			}
+			json {
+				response.status = 201
+				render contentInstance as JSON
+			}
+		}
+	}
+
+	def edit(Long id) {
+		def contentInstance = Content.get(id)
+		if (!contentInstance) {
+			flash.message = message(code: 'default.not.found.message', args: [message(code: 'content.label', default: 'Content'), id])
+			redirect(action: "list")
+			return
+		}
+		[contentInstance: contentInstance]
+	}
+
+    @Transactional
+	def update(Long id, Long version) {
+		def contentInstance = Content.get(id)
+		if (!contentInstance) {
+			withFormat {
+				html {
+					flash.message = message(code: 'default.not.found.message', args: [message(code: 'content.label', default: 'Content'), params.id])
+					redirect(action:"list")
+				}
+				json {
+					response.sendError(404)
+				}
+			}
+			return
+		}
+		if (version != null) {
+			if (contentInstance.version > version) {
+
+				contentInstance.errors.rejectValue("version", "default.optimistic.locking.failure",
+				[message(code: 'content.label', default: 'Content')] as Object[],
+				"Another user has updated this Content while you were editing")
+
+				withFormat {
+					html {
+						render(
+							view: "edit",
+							model: [
+								contentInstance: contentInstance
+							]
+						)
+					}
+					json {
+						response.sendError(409)
+					}
+				}
+				return
+			}
+		}
+		contentInstance.properties = params
+		if (!contentInstance.save(flush: true)) {
+			withFormat {
+				html {
+					render(
+						view: "edit",
+						model: [
+							contentInstance: contentInstance
+						]
+					)
+				}
+				json {
+					response.status = 400
+					render contentInstance.errors as JSON
+				}
+			}
+			return
+		}
+		attachIngredients(contentInstance);
+		withFormat {
+			html {
+				flash.message = message(code: 'default.updated.message', args: [message(code: 'content.label', default: 'Content'), contentInstance.id])
+				redirect(action: "show", id: contentInstance.id)
+			}
+			json {
+				render contentInstance as JSON
+			}
+		}
+	}
+
+    @Transactional
+	def delete(Long id) {
+		def contentInstance = Content.get(id)
+			if (!contentInstance) {
+				withFormat {
+				html {
+					flash.message = message(code: 'default.not.found.message', args: [message(code: 'content.label', default: 'Content'), id])
+					redirect(action: "list")
+				}
+				json {
+					response.sendError(404)
+				}
+			}
+		return
+		}
+		try {
+			contentInstance.delete(flush: true)
+			withFormat {
+				html {
+					flash.message = message(code: 'default.deleted.message', args: [message(code: 'content.label', default: 'Content'), id])
+					redirect(action: "list")
+				}
+				json {
+					response.status = 204
+					render ''
+				}
+			}
+		}
+		catch (DataIntegrityViolationException e) {
+			withFormat {
+				html {
+					flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'content.label', default: 'Content'), id])
+					redirect(action: "show", id: id)
+				}
+				json {
+					response.sendError(500)
+				}
+			}
+		}
+	}
+	private void attachIngredients(Content contentInstance){
 
 		List<Ingredient> usrSelIngreds = new ArrayList<Ingredient>()
 
@@ -59,85 +268,4 @@ class ContentController {
 		// overwrite with the correct ingredients
 		contentInstance.ingredients = new TreeSet(ingredients)
 	}
-
-    @Transactional
-    def save(Content contentInstance) {
-        if (contentInstance == null) {
-            notFound()
-            return
-        }
-
-        if (contentInstance.hasErrors()) {
-            respond contentInstance.errors, view:'create'
-            return
-        }
-
-		attachIngredients(contentInstance)
-        contentInstance.save flush:true
-        request.withFormat {
-
-            form {
-                flash.message = message(code: 'default.created.message', args: [message(code: 'contentInstance.label', default: 'Content'), contentInstance.id])
-                redirect contentInstance
-            }
-            '*' { respond contentInstance, [status: CREATED] }
-        }
-    }
-
-    def edit(Content contentInstance) {
-        respond contentInstance
-    }
-
-    @Transactional
-    def update(Content contentInstance) {
-        if (contentInstance == null) {
-            notFound()
-            return
-        }
-
-        if (contentInstance.hasErrors()) {
-            respond contentInstance.errors, view:'edit'
-            return
-        }
-
-		attachIngredients(contentInstance)
-        contentInstance.save flush:true
-
-        request.withFormat {
-            form {
-                flash.message = message(code: 'default.updated.message', args: [message(code: 'Content.label', default: 'Content'), contentInstance.id])
-                redirect contentInstance
-            }
-            '*'{ respond contentInstance, [status: OK] }
-        }
-    }
-
-    @Transactional
-    def delete(Content contentInstance) {
-
-        if (contentInstance == null) {
-            notFound()
-            return
-        }
-
-        contentInstance.delete flush:true
-
-        request.withFormat {
-            form {
-                flash.message = message(code: 'default.deleted.message', args: [message(code: 'Content.label', default: 'Content'), contentInstance.id])
-                redirect action:"index", method:"GET"
-            }
-            '*'{ render status: NO_CONTENT }
-        }
-    }
-
-    protected void notFound() {
-        request.withFormat {
-            form {
-                flash.message = message(code: 'default.not.found.message', args: [message(code: 'contentInstance.label', default: 'Content'), params.id])
-                redirect action: "index", method: "GET"
-            }
-            '*'{ render status: NOT_FOUND }
-        }
-    }
 }
