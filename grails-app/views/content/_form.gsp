@@ -114,8 +114,8 @@
 	</div>
 	<div class="row">
 	<h2>Andere ingredienten</h2>
-	<ul class="list-unstyled ingredients-choice">
-		<g:each in="${Content.where{((id in contentInstance.ingredients*.ingredient.id) || (id == contentInstance.id))}.list()}" var="c">
+	<ul class="ingredients-choice list-unstyled">
+		<g:each in="${Content.where{!((id in contentInstance.ingredients*.ingredient.id) || (id == contentInstance.id))}.list()}" var="c">
 		<li>
 			<span class="glyphicon glyphicon-plus-sign"></span>${c.encodeAsHTML()}
 		</li>
