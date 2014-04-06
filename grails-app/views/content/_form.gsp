@@ -71,59 +71,60 @@
 </div>
 </fieldset>
 
-<fieldset>
-<legend>Ingredienten</legend>
-<p>Als het gaat om een basis ingredient zoals water, dan kan deze stap worden overgeslagen</p>
 <div class="form-group ${hasErrors(bean: contentInstance, field: 'ingredients', 'has-error')} ">
+<h1>Ingredienten</h1>
+<p>Als het gaat om een basis ingredient zoals water, dan kan deze stap worden overgeslagen</p>
+<h2>Geselecteerde ingredienten</h2>
 	<div class="selected-ingredients row">
 		<table class="edit-ingredients">
-		<tr><th class="col-md-2">Voortext</th><th class="col-md-1">Hoeveelheid</th><th class="col-md-3">Eenheid</th><th class="col-md-3">Naam</th><th class="col-md-2">Achtertext</th><th class="col-md-1"> Verwijder</th></tr>
+			<tr><th class="col-md-2">Voortext</th><th class="col-md-1">Hoeveelheid</th><th class="col-md-3">Eenheid</th><th class="col-md-3">Naam</th><th class="col-md-2">Achtertext</th><th class="col-md-1"> Verwijder</th></tr>
 
-		<g:each in="${contentInstance.ingredients}" var="i"><tr>
-			<td>
-				<input name="ingredients.prepend" value="${i.prepend}"type="text" />
-			</td>
-			<td>
-				<input name="ingredients.amount" value="${i.quantity}" type="number" />
-			</td>
-			<td>
-				<g:select
-					name="ingredient.preferedUnit"
-					from="${nl.jappieklooster.kook.quantification.Unit.list()}"
-					optionKey="id"
-					value="${i.preferedUnit?.id ?: i.ingredient.unit.id}"
-					class="many-to-one"
-				/>
-			</td>
-			<td>
-				${i?.encodeAsHTML()}
-			</td>
-			<td>
-				<input name="ingredients.ammend" value="${i.ammend}"type="text" />
-			</td>
-			<td>
-				<span class="glyphicon glyphicon-minus-sign"></span>
-				<input name="ingredients.ingredient.id" type="hidden" value="${i.ingredient.id}" />
-			</td>
-			</tr></g:each>
+			<g:each in="${contentInstance.ingredients}" var="i">
+			<fieldset>
+			<tr>
+				<td>
+					<input name="ingredients.prepend" value="${i.prepend}"type="text" />
+				</td>
+				<td>
+					<input name="ingredients.amount" value="${i.quantity}" type="number" />
+				</td>
+				<td>
+					<g:select
+						name="ingredient.preferedUnit"
+						from="${nl.jappieklooster.kook.quantification.Unit.list()}"
+						optionKey="id"
+						value="${i.preferedUnit?.id ?: i.ingredient.unit.id}"
+						class="many-to-one"
+					/>
+				</td>
+				<td>
+					${i?.encodeAsHTML()}
+				</td>
+				<td>
+					<input name="ingredients.ammend" value="${i.ammend}"type="text" />
+				</td>
+				<td>
+					<span class="glyphicon glyphicon-minus-sign"></span>
+					<input name="ingredients.ingredient.id" type="hidden" value="${i.ingredient.id}" />
+				</td>
+			</tr>
+			</fieldset>
+			</g:each>
 		</table>
 	</div>
-	<div>
-
 	<div class="row">
+	<h2>Andere ingredienten</h2>
 	<ul class="list-unstyled ingredients-choice">
-		<g:each in="${Content.where{!((id in contentInstance.ingredients*.ingredient.id) || (id == contentInstance.id))}.list()}" var="c">
-
+		<g:each in="${Content.where{((id in contentInstance.ingredients*.ingredient.id) || (id == contentInstance.id))}.list()}" var="c">
 		<li>
 			<span class="glyphicon glyphicon-plus-sign"></span>${c.encodeAsHTML()}
 		</li>
 		</g:each>
 	</ul>
 	</div>
-</div>
-</fieldset>
 <div class="hidden">
 	<%--kick in the javascript to generate the select ingredient stuff--%>
 	<span id="contentInstance-id"><g:fieldValue bean="${contentInstance}" field="id" /></span>
 	<g:javascript src="ingredients-editor.js" />
+</div>
 </div>

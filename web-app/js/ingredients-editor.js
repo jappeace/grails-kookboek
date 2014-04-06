@@ -1,13 +1,12 @@
 if (typeof jQuery !== 'undefined') {
 	(function($) {
 		$(function() {
-			var urlPrepend = "/kook/api/";
+			var urlPrepend = "/kook/";
 			var units;
 			$.getJSON(
-					urlPrepend+"unit",
+					urlPrepend+"unit/list",
 					{},
 					function(result){
-						alert(result);
 						units = JSON.parse(result);
 					}
 				);

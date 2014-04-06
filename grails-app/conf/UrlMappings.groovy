@@ -17,7 +17,7 @@ class UrlMappings {
 		}
 		name api2: "/api/$controller/$action"(parseRequest:true)
 		name api3: "/api/$controller/$action/$id"(parseRequest:true)
-		"/"(view:"/index")
+		"/"(view:"/category/choose")
 		"500"(view:'/error')
 	}
 }

@@ -39,7 +39,7 @@ class User {
 	protected void encodePassword() {
 		password = springSecurityService.encodePassword(password)
 	}
-	void boolean saveAndBindRoles(def selectedRoles){
+	boolean saveAndBindRoles(def selectedRoles){
         boolean result = save flush:true
 		UserRole.removeAll this
 		selectedRoles.each{ role ->
