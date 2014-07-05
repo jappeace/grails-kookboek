@@ -38,7 +38,7 @@ class ${className}Controller {
 				}
 				else {
 					response.status = 204
-					render ''
+					render '[]'
 				}
 			}
 		}

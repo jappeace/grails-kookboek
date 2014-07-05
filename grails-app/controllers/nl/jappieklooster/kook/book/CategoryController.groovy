@@ -40,9 +40,15 @@ class CategoryController {
 				}
 				else {
 					response.status = 204
-					render ''
+					render '[]'
 				}
 			}
+		}
+	}
+	def choose(){
+		def listObject = [categoryInstanceList: Category.list()]
+		withFormat{
+			html listObject
 		}
 	}
 
@@ -77,6 +83,7 @@ class CategoryController {
 	def create() {
 		[categoryInstance: new Category(params)]
 	}
+
 
     @Transactional
 	def save() {

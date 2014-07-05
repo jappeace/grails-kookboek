@@ -40,7 +40,7 @@ class UnitController {
 				}
 				else {
 					response.status = 204
-					render ''
+					render '[]'
 				}
 			}
 		}
