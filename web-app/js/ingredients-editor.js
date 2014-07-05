@@ -25,12 +25,22 @@ if (typeof jQuery !== 'undefined') {
 					result.forEach(function(jsonElement){
 						units.addUnit(jsonElement.id, jsonElement.name);
 					});
-					alert(units.printElement("unit.id"));
 				}
 			);
 
-			var createRow = function(based){
-			};
+			$.getJSON(
+				urlPrepend+"content/list",
+				{},
+				function(result){
+					result.forEach(function(jsonElement){
+						$(".ingredients-choice").append("<li class='needs-callback'><button type='button' class='add-ingredient btn btn-default btn-xs select-button'>selecteer:</button>"+jsonElement.name+"</li>");
+						$(".needs-callback .add-ingredient").on("click", function(){
+							alert("clicked " + jsonElement.name);
+						});
+						$(".needs-callback").removeClass("needs-callback");
+					});
+				}
+			);
 		});
 	})(jQuery);
 
