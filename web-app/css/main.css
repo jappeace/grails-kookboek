@@ -35,6 +35,15 @@ div.layoutBody{
 
 }
 
-.select-button{
-	margin-right:1em;
+.button-symbol{
+	font-size:175%;
+}
+.button-symbol:hover{
+	cursor:pointer;
+}
+.add-ingredient{
+	font-size:120%;
+}
+.highlight-li li:hover{
+	background:rgba(10,10,10,0.1)
 }
