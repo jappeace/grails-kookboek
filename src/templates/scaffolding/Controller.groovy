@@ -213,7 +213,7 @@ class ${className}Controller {
 				}
 				json {
 					response.status = 204
-					render ''
+					render '[]'
 				}
 			}
 		}
