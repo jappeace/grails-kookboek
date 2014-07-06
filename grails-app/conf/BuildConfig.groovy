@@ -21,7 +21,7 @@ grails.project.fork = [
     console: [maxMemory: 768, minMemory: 64, debug: false, maxPerm: 256]
 ]
 
-grails.project.dependency.resolver = "ivy" // or ivy
+grails.project.dependency.resolver = "maven" // or ivy
 grails.project.dependency.resolution = {
     // inherit Grails' default dependencies
     inherits("global") {
@@ -50,23 +50,24 @@ grails.project.dependency.resolution = {
     dependencies {
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes e.g.
 		compile 'org.apache.commons:commons-lang3:3.1'
-        runtime 'mysql:mysql-connector-java:5.1.24'
+        runtime 'mysql:mysql-connector-java:5.1.29'
+        test "org.grails:grails-datastore-test-support:1.0-grails-2.4"
     }
 
     plugins {
         // plugins for the build system only
-        build ":tomcat:7.0.47"
+        build ":tomcat:7.0.54"
 
         // plugins for the compile step
-        compile ":scaffolding:2.0.1"
-        compile ':cache:1.1.1'
-		compile ":spring-security-core:2.0-RC2"
+        compile ":scaffolding:2.1.1"
+        compile ':cache:1.1.6'
+        compile ":asset-pipeline:1.8.11"
+		compile ":spring-security-core:2.0-RC3"
 
         // plugins needed at runtime but not for compilation
-        runtime ":hibernate4:4.1.11.4"
-        runtime ":database-migration:1.3.8"
-        runtime ":jquery:1.11.0.1"
-        runtime ":resources:1.2.1"
-		//runtime ":twitter-bootstrap:3.1.1"
+        runtime ":hibernate4:4.3.5.4"
+        runtime ":database-migration:1.4.0"
+        runtime ":jquery:1.11.1"
+        //runtime ":resources:1.2.1"
     }
 }
