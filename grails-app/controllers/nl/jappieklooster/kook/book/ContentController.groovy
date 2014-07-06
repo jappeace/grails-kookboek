@@ -239,17 +239,18 @@ class ContentController {
 
 		List<Ingredient> usrSelIngreds = new ArrayList<Ingredient>()
 
-		println params["ingredients[].ingredient"]
+		String fieldName = "ingredientsChoice."
+		println params[fieldName+"content.id"]
 		// construct a sane data structure
-		params["ingredients[]"].each{
+		params[fieldName+"content.id"].eachWithIndex{ def id, int index ->
 			println it
 			usrSelIngreds.add(
 				new Ingredient(
 					recipe: contentInstance,
-					ingredient: Content.findById(it.content.id),
-					prepend:it.prepend,
-					ammend:it.ammend,
-					preferedUnit:Unit.findById(it.unit.id)
+					ingredient: Content.findById(id),
+					prepend:params[fieldName+"prepend"][index],
+					ammend:params[fieldName+"ammend"][index],
+					preferedUnit:Unit.findById(params[fieldName+"unit.id"][index])
 				)
 			);
 		}

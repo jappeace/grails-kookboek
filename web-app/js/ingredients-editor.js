@@ -47,13 +47,13 @@ if (typeof jQuery !== 'undefined') {
 
 							var removeCallbackString = "needs-remove-callback";
 							var result = "<tr class='"+removeCallbackString+"'>";
-							var fieldName = "ingredients[].ingredient";
+							var fieldName = "ingredientsChoice.";
 
-							result += "<td><input class='form-control' name='"+fieldName+".prepend' /></td>";
-							result += "<td><input class='form-control' name='"+fieldName+".quantity' type='number' required/></td>";
-							result += "<td>"+units.printElement(fieldName+".unit.id", jsonElement.unit.id)+"</td>";
-							result += "<td><input class='form-control' name='"+fieldName+".content.id' type='hidden' value='"+jsonElement.id+"'>"+jsonElement.name+"</td>";
-							result += "<td><input class='form-control' name='"+fieldName+".ammend' /></td>";
+							result += "<td><input class='form-control' name='"+fieldName+"prepend' /></td>";
+							result += "<td><input class='form-control' name='"+fieldName+"quantity' type='number' required/></td>";
+							result += "<td>"+units.printElement(fieldName+"unit.id", jsonElement.unit.id)+"</td>";
+							result += "<td><input class='form-control' name='"+fieldName+"content.id' type='hidden' value='"+jsonElement.id+"'>"+jsonElement.name+"</td>";
+							result += "<td><input class='form-control' name='"+fieldName+"ammend' /></td>";
 							result += "<td><span class='button-symbol glyphicon glyphicon-remove-sign remove-ingredient'></span></td>";
 							$(".edit-ingredients").append(result+"</tr>");
 
