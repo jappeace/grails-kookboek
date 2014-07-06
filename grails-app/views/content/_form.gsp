@@ -78,38 +78,6 @@
 	<div class="selected-ingredients row">
 		<table class="edit-ingredients">
 			<tr><th class="col-md-2">Voortext</th><th class="col-md-1">Hoeveelheid</th><th class="col-md-3">Eenheid</th><th class="col-md-3">Naam</th><th class="col-md-2">Achtertext</th><th class="col-md-1"> Verwijder</th></tr>
-
-			<g:each in="${contentInstance.ingredients}" var="i">
-			<fieldset>
-			<tr>
-				<td>
-					<input name="ingredients.prepend" value="${i.prepend}"type="text" />
-				</td>
-				<td>
-					<input name="ingredients.amount" value="${i.quantity}" type="number" />
-				</td>
-				<td>
-					<g:select
-						name="ingredient.preferedUnit"
-						from="${nl.jappieklooster.kook.quantification.Unit.list()}"
-						optionKey="id"
-						value="${i.preferedUnit?.id ?: i.ingredient.unit.id}"
-						class="many-to-one"
-					/>
-				</td>
-				<td>
-					${i?.encodeAsHTML()}
-				</td>
-				<td>
-					<input name="ingredients.ammend" value="${i.ammend}"type="text" />
-				</td>
-				<td>
-					<span class="glyphicon glyphicon-minus-sign"></span>
-					<input name="ingredients.ingredient.id" type="hidden" value="${i.ingredient.id}" />
-				</td>
-			</tr>
-			</fieldset>
-			</g:each>
 		</table>
 	</div>
 	<div class="row">

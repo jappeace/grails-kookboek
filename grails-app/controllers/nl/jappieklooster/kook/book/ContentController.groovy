@@ -5,7 +5,9 @@ import org.springframework.dao.DataIntegrityViolationException
 import grails.converters.JSON
 import grails.transaction.Transactional
 import grails.plugin.springsecurity.annotation.Secured
+import groovy.util.logging.*
 
+@Log
 @Secured(["ROLE_ADMIN"])
 @Transactional(readOnly = true)
 class ContentController {
@@ -80,6 +82,7 @@ class ContentController {
 
     @Transactional
 	def save() {
+		println params
 		def contentInstance = new Content(params)
 		if (!contentInstance.save(flush: true)) {
 			withFormat {
@@ -236,12 +239,17 @@ class ContentController {
 
 		List<Ingredient> usrSelIngreds = new ArrayList<Ingredient>()
 
+		println params["ingredients[].ingredient"]
 		// construct a sane data structure
-		params["ingredientChoice"].each{
+		params["ingredients[]"].each{
+			println it
 			usrSelIngreds.add(
 				new Ingredient(
 					recipe: contentInstance,
-					ingredient: Content.findById(it)
+					ingredient: Content.findById(it.content.id),
+					prepend:it.prepend,
+					ammend:it.ammend,
+					preferedUnit:Unit.findById(it.unit.id)
 				)
 			);
 		}
