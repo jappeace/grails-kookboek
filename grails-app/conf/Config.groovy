@@ -11,12 +11,11 @@
 //    grails.config.locations << "file:" + System.properties["${appName}.config.location"]
 // }
 
-grails.project.groupId = "nl.jappieklooster.kook" // change this to alter the default package name and Maven publishing destination
+grails.project.groupId = appName // change this to alter the default package name and Maven publishing destination
 
 // The ACCEPT header will not be used for content negotiation for user agents containing the following strings (defaults to the 4 major rendering engines)
-// after a quick review browsers seem to want html again['Gecko', 'WebKit', 'Presto', 'Trident']
 grails.mime.disable.accept.header.userAgents = []
-grails.mime.types = [
+grails.mime.types = [ // the first one is the default format
     atom:          'application/atom+xml',
     css:           'text/css',
     csv:           'text/csv',
@@ -33,9 +32,6 @@ grails.mime.types = [
 
 // URL Mapping Cache Max Size, defaults to 5000
 //grails.urlmapping.cache.maxsize = 1000
-
-// What URL patterns should be processed by the resources plugin
-grails.resources.adhoc.patterns = ['/images/*', '/css/*', '/js/*', '/plugins/*']
 
 // Legacy setting for codec used to encode data with ${}
 grails.views.default.codec = "html"
@@ -58,11 +54,10 @@ grails {
             }
         }
         // escapes all not-encoded output at final stage of outputting
-        filteringCodecForContentType {
-            //'text/html' = 'html'
-        }
+        // filteringCodecForContentType.'text/html' = 'html'
     }
 }
+
 
 grails.converters.encoding = "UTF-8"
 // scaffolding templates configuration
@@ -78,10 +73,16 @@ grails.spring.bean.packages = []
 grails.web.disable.multipart=false
 
 // request parameters to mask when logging exceptions
-grails.exceptionresolver.params.exclude = ['password', 'j_password']
+grails.exceptionresolver.params.exclude = ['password']
 
 // configure auto-caching of queries by default (if false you can cache individual queries with 'cache: true')
 grails.hibernate.cache.queries = false
+
+// configure passing transaction's read-only attribute to Hibernate session, queries and criterias
+// set "singleSession = false" OSIV mode in hibernate configuration after enabling
+grails.hibernate.pass.readonly = false
+// configure passing read-only to OSIV session by default, requires "singleSession = false" OSIV mode
+grails.hibernate.osiv.readonly = false
 
 environments {
     development {
@@ -94,7 +95,7 @@ environments {
 }
 
 // log4j configuration
-log4j = {
+log4j.main = {
     // Example of changing the log pattern for the default console appender:
     //
     //appenders {
@@ -114,7 +115,6 @@ log4j = {
            'net.sf.ehcache.hibernate'
 }
 
-
 // Added by the Spring Security Core plugin:
 grails.plugin.springsecurity.userLookup.userDomainClassName = 'nl.jappieklooster.kook.security.User'
 grails.plugin.springsecurity.userLookup.authorityJoinClassName = 'nl.jappieklooster.kook.security.UserRole'
@@ -123,11 +123,12 @@ grails.plugin.springsecurity.password.encodeHashAsBase64 = true
 grails.plugin.springsecurity.logout.postOnly = false
 grails.plugin.springsecurity.successHandler.defaultTargetUrl = '/cook'
 grails.plugin.springsecurity.controllerAnnotations.staticRules = [
-	'/':                              ['permitAll'],
-	'/dbconsole/**':                  ['ROLE_ADMIN'],
-	'/index.gsp':                     ['permitAll'],
-	'/**/js/**':                      ['permitAll'],
-	'/**/css/**':                     ['permitAll'],
-	'/**/images/**':                  ['permitAll'],
-	'/**/favicon.ico':                ['permitAll']
+       '/':                              ['permitAll'],
+       '/dbconsole/**':                  ['ROLE_ADMIN'],
+       '/index.gsp':                     ['permitAll'],
+       '/**/js/**':                      ['permitAll'],
+       '/**/css/**':                     ['permitAll'],
+       '/**/images/**':                  ['permitAll'],
+       '/**/favicon.ico':                ['permitAll']
 ]
+
