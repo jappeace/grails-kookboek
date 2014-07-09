@@ -1,6 +1,5 @@
 package nl.jappieklooster.kook.book
 import nl.jappieklooster.kook.Authored
-import org.apache.commons.lang3.text.WordUtils
 import nl.jappieklooster.Echo
 import nl.jappieklooster.kook.quantification.Unit
 /**
