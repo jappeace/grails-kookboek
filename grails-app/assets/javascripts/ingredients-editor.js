@@ -1,3 +1,5 @@
+//= require jquery
+//= require_self
 if (typeof jQuery !== 'undefined') {
 	(function($) {
 		$(function() {
@@ -51,10 +53,14 @@ if (typeof jQuery !== 'undefined') {
 
 							result += "<td><input class='form-control' name='"+fieldName+"prepend' /></td>";
 							result += "<td><input class='form-control' name='"+fieldName+"quantity' type='number' required/></td>";
+							if(jsonElement.unit === null){
+								jsonElement.unit = {id: 0};
+							}
 							result += "<td>"+units.printElement(fieldName+"unit.id", jsonElement.unit.id)+"</td>";
 							result += "<td><input class='form-control' name='"+fieldName+"content.id' type='hidden' value='"+jsonElement.id+"'>"+jsonElement.name+"</td>";
 							result += "<td><input class='form-control' name='"+fieldName+"ammend' /></td>";
 							result += "<td><span class='button-symbol glyphicon glyphicon-remove-sign remove-ingredient'></span></td>";
+
 							$(".edit-ingredients").append(result+"</tr>");
 
 							$("."+removeCallbackString +" .remove-ingredient").on("click", function(){

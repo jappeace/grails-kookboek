@@ -6,6 +6,7 @@ import grails.converters.JSON
 import grails.transaction.Transactional
 import grails.plugin.springsecurity.annotation.Secured
 import groovy.util.logging.*
+import nl.jappieklooster.kook.quantification.Unit
 
 @Log
 @Secured(["ROLE_ADMIN"])
@@ -240,10 +241,8 @@ class ContentController {
 		List<Ingredient> usrSelIngreds = new ArrayList<Ingredient>()
 
 		String fieldName = "ingredientsChoice."
-		println params[fieldName+"content.id"]
 		// construct a sane data structure
 		params[fieldName+"content.id"].eachWithIndex{ def id, int index ->
-			println it
 			usrSelIngreds.add(
 				new Ingredient(
 					recipe: contentInstance,
