@@ -1,4 +1,5 @@
 <%@ page import="nl.jappieklooster.kook.book.Category" %>
+<!DOCTYPE html>
 <!--[if lt IE 7 ]> <html lang="en" class="no-js ie6"> <![endif]-->
 <!--[if IE 7 ]>    <html lang="en" class="no-js ie7"> <![endif]-->
 <!--[if IE 8 ]>    <html lang="en" class="no-js ie8"> <![endif]-->
@@ -10,8 +11,8 @@
 		<title><g:layoutTitle default="Grails"/></title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link rel="shortcut icon" href="${assetPath(src: 'favicon.ico')}" type="image/x-icon">
-		<resource:require module="style" />
-		<r:layoutResources/>
+  		<asset:stylesheet src="main.css"/>
+		<asset:javascript src="style.js"/>
 		<g:layoutHead/>
 	</head>
 	<body>
@@ -70,6 +71,5 @@
 		</div>
 		<div id="spinner" class="spinner" style="display:none;"><g:message code="spinner.alt" default="Loading&hellip;"/></div>
 	</div>
-	<r:layoutResources/>
 	</body>
 </html>

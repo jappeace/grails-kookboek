@@ -1,3 +1,5 @@
+//= require jquery
+//= require_self
 if (typeof jQuery !== 'undefined') {
 	(function($) {
 		$(function() {

@@ -1,7 +1,6 @@
 /*
 *= require_self
 *= require_tree /fonts/
-*= require /javascipts/style.js
 *= encoding UTF-8
 */
 @import url('theme.css');
