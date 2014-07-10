@@ -1,9 +1,9 @@
 /*
-*= require_self
 *= require_tree /fonts/
+*= require theme.css
+*= require_self
 *= encoding UTF-8
 */
-@import url('theme.css');
 div.layoutBody{
 	margin-top:50px;
 }

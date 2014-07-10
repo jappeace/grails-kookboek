@@ -45,6 +45,7 @@ class CategoryController {
 			}
 		}
 	}
+	@Secured(["permitAll"])
 	def choose(){
 		def listObject = [categoryInstanceList: Category.list()]
 		withFormat{

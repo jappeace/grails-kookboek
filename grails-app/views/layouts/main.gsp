@@ -16,7 +16,7 @@
 		<g:layoutHead/>
 	</head>
 	<body>
-		<header class="navbar navbardefault navbar-fixed-top" role="banner">
+		<header class="navbar navbar-default navbar-fixed-top" role="banner">
 			<div class="container">
 			<div class="navbar-header">
 				<a href="${createLink(uri: '/')}" class="navbar-brand">Awesome boek</a>
