@@ -53,7 +53,6 @@ class BootStrap {
 					i.user.save(flush:true)
 					UserRole.create i.user, i.role
 				}
-			
 			}
 		}
 		def dimensions =  [
@@ -167,23 +166,23 @@ class BootStrap {
 			new Ingredient(
 				ingredient: contents.aardbei,
 				prepend: "diepvries"
-			), 
+			),
 			new Ingredient(
 				ingredient: contents.crfr,
-			), 
+			),
 			new Ingredient(
 				ingredient: contents.eidooi,
-			), 
+			),
 			new Ingredient(
 				ingredient: contents.frdebois,
 				prepend: "scheutje"
-			), 
+			),
 			new Ingredient(
 				ingredient: contents.gelatine,
-			), 
+			),
 			new Ingredient(
 				ingredient: contents.sugar,
-			) 
+			)
 		].each{
 			contents.aardbeienTaart.addToIngredients(it)
 		}
@@ -193,7 +192,6 @@ class BootStrap {
     }
     private boolean storeIfNoTypeElements(LinkedHashMap list, Class type){
         Log.write "Started with adding the {0} classes.", type.getName()
-        
         if(type.list()){
 			Log.write "this type already contains elements, exiting"
 			return
@@ -201,7 +199,6 @@ class BootStrap {
 
         int saved = 0;
         int failed = 0;
-        
 		list.each{ key, i ->
 			if(i.validate()){
 				i.save(flush:true, failOnError: true)
