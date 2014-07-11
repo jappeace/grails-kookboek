@@ -52,6 +52,9 @@ class ContentController {
 	def list() {
 		redirect(action: "index", params: params)
 	}
+	def ingredientsList(Long id){
+		render Content.get(id).ingredients as JSON
+	}
 	@Secured(["permitAll"])
 	def show(Long id) {
 		def contentInstance = Content.get(id)
@@ -125,7 +128,9 @@ class ContentController {
 			redirect(action: "list")
 			return
 		}
-		[contentInstance: contentInstance]
+		[
+			contentInstance: contentInstance,
+		]
 	}
 
     @Transactional
@@ -249,7 +254,8 @@ class ContentController {
 					ingredient: Content.findById(id),
 					prepend:params[fieldName+"prepend"][index],
 					ammend:params[fieldName+"ammend"][index],
-					preferedUnit:Unit.findById(params[fieldName+"unit.id"][index])
+					preferedUnit:Unit.findById(params[fieldName+"unit.id"][index]),
+					quantity:params[fieldName+"quantity"][index]
 				)
 			);
 		}

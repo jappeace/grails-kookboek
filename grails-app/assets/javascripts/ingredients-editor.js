@@ -34,45 +34,58 @@ if (typeof jQuery !== 'undefined') {
 				}
 			);
 
+			function createIngredientForm(jsonElement){
+				var removeCallbackString = "needs-remove-callback";
+				var result = "<tr class='"+removeCallbackString+"'>";
+				var fieldName = "ingredientsChoice.";
+
+				result += "<td><input class='form-control' name='"+fieldName+"prepend' /></td>";
+				result += "<td><input class='form-control' name='"+fieldName+"quantity' type='number' required/></td>";
+				if(jsonElement.unit === null){
+					jsonElement.unit = {id: 0};
+				}
+				result += "<td>"+units.printElement(fieldName+"unit.id", jsonElement.unit.id)+"</td>";
+				result += "<td><input class='form-control' name='"+fieldName+"content.id' type='hidden' value='"+jsonElement.id+"'>"+jsonElement.name+"</td>";
+				result += "<td><input class='form-control' name='"+fieldName+"ammend' /></td>";
+				result += "<td><span class='button-symbol glyphicon glyphicon-remove-sign remove-ingredient'></span></td>";
+
+				$(".edit-ingredients").append(result+"</tr>");
+
+				$("."+removeCallbackString +" .remove-ingredient").on("click", function(){
+					$(this).parents("tr").remove();
+					createIngredientLI(jsonElement);
+				});
+				$("."+removeCallbackString).removeClass(removeCallbackString);
+			}
+			function createIngredientLI(jsonElement){
+
+				var addCallbackString = "needs-add-callback";
+				$(".ingredients-choice").append("<li class='"+addCallbackString+"'>"+
+					"<span class='glyphicon glyphicon-plus-sign button-symbol add-ingredient'></span>"+jsonElement.name+"</li>");
+
+				$("."+addCallbackString+" .add-ingredient").on("click", function(){
+					$(this).parent().remove();
+					createIngredientForm(jsonElement);
+				});
+				$("."+addCallbackString).removeClass(addCallbackString);
+			}
 			$.getJSON(
 				urlPrepend+"content/list",
 				{},
-				function(result){
-					function ingredientSelect(jsonElement){
+				function(allContents){
 
-						var addCallbackString = "needs-add-callback";
-						$(".ingredients-choice").append("<li class='"+addCallbackString+"'>"+
-							"<span class='glyphicon glyphicon-plus-sign button-symbol add-ingredient'></span>"+jsonElement.name+"</li>");
+					var instanceId = $("#conentInstance-id").value();
+					$.getJSON(
+						urlPrepend+"conent/ingredientsList",{id:instanceId},
+						function(ingredients){
+							ingredients.foreach(
+								function(simpleIngred){
+								}
+							);
 
-						$("."+addCallbackString+" .add-ingredient").on("click", function(){
-							$(this).parent().remove();
-
-							var removeCallbackString = "needs-remove-callback";
-							var result = "<tr class='"+removeCallbackString+"'>";
-							var fieldName = "ingredientsChoice.";
-
-							result += "<td><input class='form-control' name='"+fieldName+"prepend' /></td>";
-							result += "<td><input class='form-control' name='"+fieldName+"quantity' type='number' required/></td>";
-							if(jsonElement.unit === null){
-								jsonElement.unit = {id: 0};
-							}
-							result += "<td>"+units.printElement(fieldName+"unit.id", jsonElement.unit.id)+"</td>";
-							result += "<td><input class='form-control' name='"+fieldName+"content.id' type='hidden' value='"+jsonElement.id+"'>"+jsonElement.name+"</td>";
-							result += "<td><input class='form-control' name='"+fieldName+"ammend' /></td>";
-							result += "<td><span class='button-symbol glyphicon glyphicon-remove-sign remove-ingredient'></span></td>";
-
-							$(".edit-ingredients").append(result+"</tr>");
-
-							$("."+removeCallbackString +" .remove-ingredient").on("click", function(){
-								$(this).parents("tr").remove();
-								ingredientSelect(jsonElement);
-							});
-							$("."+removeCallbackString).removeClass(removeCallbackString);
-
-						});
-						$("."+addCallbackString).removeClass(addCallbackString);
-					}
-					result.forEach(ingredientSelect);
+						}
+					);
+					allContents.forEach(createIngredientLI);
 				}
 			);
 		});

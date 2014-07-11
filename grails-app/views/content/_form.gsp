@@ -83,14 +83,10 @@
 	<div class="row">
 	<h2>Andere ingredienten</h2>
 	<ul class="ingredients-choice list-unstyled highlight-li">
-		<g:each in="${Content.where{!((id in contentInstance.ingredients*.ingredient.id) || (id == contentInstance.id))}.list()}" var="c">
-		<li>
-			<span class="glyphicon glyphicon-plus-sign"></span>${c.encodeAsHTML()}
-		</li>
-		</g:each>
 	</ul>
 	</div>
 <div class="hidden">
+
 	<%--kick in the javascript to generate the select ingredient stuff--%>
 	<span id="contentInstance-id"><g:fieldValue bean="${contentInstance}" field="id" /></span>
 	<asset:javascript src="ingredients-editor.js" />

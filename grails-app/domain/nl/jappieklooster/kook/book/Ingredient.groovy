@@ -59,16 +59,5 @@ class Ingredient implements Comparable<Ingredient>{
 	int compareTo(Ingredient to){
 		ingredient.compareTo(to.ingredient)
 	}
-	@Override
-	boolean equals(Object to){
-		if(!to instanceof Ingredient){
-			return false
-		}
-		Ingredient target = (Ingredient) to
-		if(target.is(this)){
-			return true
-		}
-		return target.recipe == this.recipe && target.ingredient == this.ingredient
-	}
 
 }

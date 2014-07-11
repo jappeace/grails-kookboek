@@ -98,20 +98,20 @@ class BootStrap {
 				dimension: dimensions.things
 			),
 			leaf: new Unit(
-				name: "blad", 
-				plural:"blaadjes",  
+				name: "blad",
+				plural:"blaadjes",
 				dimension: dimensions.things
 			),
 			stick: new Unit(
-				name: "stok", 
-				plural:"stokken",  
+				name: "stok",
+				plural:"stokken",
 				dimension: dimensions.things
 			),
 			package: new Unit(
-				name: "verpakking", 
+				name: "verpakking",
 				dimension: dimensions.things
 			)
-		]	
+		]
 		storeIfNoTypeElements(units, Unit)
 		// add some categories
 		def categories = [
@@ -165,23 +165,29 @@ class BootStrap {
 		[
 			new Ingredient(
 				ingredient: contents.aardbei,
-				prepend: "diepvries"
+				prepend: "diepvries",
+				quantity:2023
 			),
 			new Ingredient(
 				ingredient: contents.crfr,
+				quantity:200
 			),
 			new Ingredient(
 				ingredient: contents.eidooi,
+				quantity:2
 			),
 			new Ingredient(
 				ingredient: contents.frdebois,
-				prepend: "scheutje"
+				prepend: "scheutje",
+				quantity:4
 			),
 			new Ingredient(
 				ingredient: contents.gelatine,
+				quantity:10
 			),
 			new Ingredient(
 				ingredient: contents.sugar,
+				quantity:100
 			)
 		].each{
 			contents.aardbeienTaart.addToIngredients(it)

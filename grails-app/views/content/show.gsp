@@ -21,16 +21,23 @@
 			<div class="row">
 				<div class="col-md-8">
 				<g:if test="${contentInstance?.ingredients}">
-					<ul class="ingredients-list">
+				<table>
 						<g:each in="${contentInstance.ingredients}" var="i">
-						<li aria-labelledby="ingredients-label">
-							<g:link controller="content" action="show" id="${i.ingredient.id}">
-								${i?.encodeAsHTML()}
-							</g:link>
-						</li>
+							<tr>
+								<td><g:fieldValue bean="${i}" field="prepend"/></td>
+								<td><g:fieldValue bean="${i}" field="quantity"/></td>
+								<g:if test="${i.preferedUnit}">
+									<td><g:fieldValue bean="${i.preferedUnit}" field="name"/></td>
+								</g:if>
+								<g:elseif test="${i.ingredient.unit}">
+									<td><g:fieldValue bean="${i.ingredient.unit}" field="name"/></td>
+								</g:elseif>
+								<td><g:fieldValue bean="${i.ingredient}" field="name"/></td>
+								<td><g:fieldValue bean="${i}" field="ammend"/></td>
+							</tr>
 						</g:each>
-					</ul>
 				</g:if>
+				</table>
 				</div>
 				<div class="col-md-4 well">
 					<dl>

@@ -43,6 +43,18 @@ class IngredientControllerSpec extends Specification {
         then:"The create view is rendered again with the correct model"
             model.ingredientInstance!= null
             view == 'create'
+
+        when:"The save action is executed with a valid instance"
+            response.reset()
+            populateValidParams(params)
+            ingredient = new Ingredient(params)
+
+            controller.save(ingredient)
+
+        then:"A redirect is issued to the show action"
+            response.redirectedUrl == '/ingredient/show/1'
+            controller.flash.message != null
+            Ingredient.count() == 1
     }
 
     void "Test that the show action returns the correct model"() {
@@ -95,6 +107,16 @@ class IngredientControllerSpec extends Specification {
         then:"The edit view is rendered again with the invalid instance"
             view == 'edit'
             model.ingredientInstance == ingredient
+
+        when:"A valid domain instance is passed to the update action"
+            response.reset()
+            populateValidParams(params)
+            ingredient = new Ingredient(params).save(flush: true)
+            controller.update(ingredient)
+
+        then:"A redirect is issues to the show action"
+            response.redirectedUrl == "/ingredient/show/$ingredient.id"
+            flash.message != null
     }
 
     void "Test that the delete action deletes an instance if it exists"() {
@@ -102,6 +124,22 @@ class IngredientControllerSpec extends Specification {
             controller.delete(null)
 
         then:"A 404 is returned"
+            response.redirectedUrl == '/ingredient/index'
+            flash.message != null
+
+        when:"A domain instance is created"
+            response.reset()
+            populateValidParams(params)
+            def ingredient = new Ingredient(params).save(flush: true)
+
+        then:"It exists"
+            Ingredient.count() == 1
+
+        when:"The domain instance is passed to the delete action"
+            controller.delete(ingredient)
+
+        then:"The instance is deleted"
+            Ingredient.count() == 0
             response.redirectedUrl == '/ingredient/index'
             flash.message != null
     }

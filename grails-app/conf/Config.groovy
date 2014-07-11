@@ -121,7 +121,7 @@ grails.plugin.springsecurity.userLookup.authorityJoinClassName = 'nl.jappiekloos
 grails.plugin.springsecurity.authority.className = 'nl.jappieklooster.kook.security.Role'
 grails.plugin.springsecurity.password.encodeHashAsBase64 = true
 grails.plugin.springsecurity.logout.postOnly = false
-grails.plugin.springsecurity.successHandler.defaultTargetUrl = '/cook'
+grails.plugin.springsecurity.successHandler.defaultTargetUrl = '/category/choose'
 grails.plugin.springsecurity.controllerAnnotations.staticRules = [
        '/':                              ['permitAll'],
        '/dbconsole/**':                  ['ROLE_ADMIN'],
