@@ -7,7 +7,11 @@ class UrlMappings {
             }
         }
 
-        "/"(view:"/category/choose")
+        "/"{
+			controller = "category"
+			action = "choose"
+		}
+
         "500"(view:'/error')
 	}
 }
