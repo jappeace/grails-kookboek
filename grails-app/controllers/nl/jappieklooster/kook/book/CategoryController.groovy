@@ -48,6 +48,7 @@ class CategoryController {
 	@Secured(["permitAll"])
 	def choose(){
 		def listObject = [categoryInstanceList: Category.list()]
+		println listObject
 		withFormat{
 			html listObject
 		}
@@ -57,6 +58,7 @@ class CategoryController {
 		redirect(action: "index", params: params)
 	}
 
+	@Secured(["permitAll"])
 	def show(Long id) {
 		def categoryInstance = Category.get(id)
 		if (!categoryInstance) {

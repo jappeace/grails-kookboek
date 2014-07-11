@@ -52,7 +52,7 @@ class ContentController {
 	def list() {
 		redirect(action: "index", params: params)
 	}
-
+	@Secured(["permitAll"])
 	def show(Long id) {
 		def contentInstance = Content.get(id)
 		if (!contentInstance) {
