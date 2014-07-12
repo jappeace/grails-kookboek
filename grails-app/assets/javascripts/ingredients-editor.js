@@ -96,29 +96,28 @@ if (typeof jQuery !== 'undefined') {
 				});
 				$("."+addCallbackString).removeClass(addCallbackString);
 			}
+			var instanceId = $("#contentInstance-id").html();
+			$.getJSON(
+				urlPrepend+"content/ingredientsList/"+instanceId,{},
+				function(ingredients){
+					ingredients.forEach(function(ingredient){
+						$.getJSON(
+							urlPrepend+"content/show/"+ingredient.ingredient.id,
+							{},
+							function(contentInstance){
+								ingredient.ingredient = contentInstance;
+								createIngredientForm(ingredient);
+							}
+						);
+					});
+
+				}
+			);
 			$.getJSON(
 				urlPrepend+"content/list",
 				{},
 				function(allContents){
 
-					var instanceId = $("#contentInstance-id").html();
-					$.getJSON(
-						urlPrepend+"content/ingredientsList/"+instanceId,{},
-						function(ingredients){
-							ingredients.forEach(function(ingredient){
-								$.getJSON(
-									urlPrepend+"content/show/"+ingredient.ingredient.id,
-									{},
-									function(contentInstance){
-										console.info(contentInstance);
-										ingredient.ingredient = contentInstance;
-										createIngredientForm(ingredient);
-									}
-								);
-							});
-
-						}
-					);
 					allContents.forEach(createIngredientLI);
 				}
 			);

@@ -32,7 +32,7 @@ class ContentController {
 	]
 
 	def index(Integer max) {
-		params.max = Math.min(max ?: 10, 100)
+		params.max = max ?: 10
 		def list = Content.list(params)
 		def listObject = [contentInstanceList: list, contentInstanceTotal: Content.count()]
 		withFormat {
@@ -49,7 +49,14 @@ class ContentController {
 		}
 	}
 
-	def list() {
+	/**
+	* lists all the contents that are not a ingredient or the specified id self
+	* if no id is specified all contents will be listed, as is done with index
+	*/
+	def list(Long id) {
+		if(id){
+			return
+		}
 		redirect(action: "index", params: params)
 	}
 	@Secured(["permitAll"])
