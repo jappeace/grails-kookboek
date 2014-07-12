@@ -55,6 +55,23 @@ class ContentController {
 	*/
 	def list(Long id) {
 		if(id){
+			def contentInstance = Content.get(id)
+			def list = Content.where{!((id in contentInstance.ingredients*.ingredient.id) || (id == contentInstance.id))}.list()
+
+			withFormat {
+				html {
+					render(view:'index', model:[contentInstanceList: list, contentInstanceTotal: list.size()])
+				}
+				json {
+					if (list){
+						render list as JSON
+					}
+					else {
+						response.status = 204
+						render '[]'
+					}
+				}
+			}
 			return
 		}
 		redirect(action: "index", params: params)
@@ -100,7 +117,6 @@ class ContentController {
 
     @Transactional
 	def save() {
-		println params
 		def contentInstance = new Content(params)
 		if (!contentInstance.save(flush: true)) {
 			withFormat {

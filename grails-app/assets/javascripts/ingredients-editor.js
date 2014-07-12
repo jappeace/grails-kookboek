@@ -114,7 +114,7 @@ if (typeof jQuery !== 'undefined') {
 				}
 			);
 			$.getJSON(
-				urlPrepend+"content/list",
+				urlPrepend+"content/list/"+format(instanceId),
 				{},
 				function(allContents){
 
