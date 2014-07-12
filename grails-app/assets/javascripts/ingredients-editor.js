@@ -2,9 +2,10 @@
 //= require_self
 if (typeof jQuery !== 'undefined') {
 	(function($) {
+		"use strict";
 		$(function() {
 			var urlPrepend = "/kook/";
-			var units = function(){
+			function Units(){
 				var unitRows = [];
 				this.addUnit = function(id, name){
 					unitRows.push({id: id, name:name});
@@ -22,8 +23,8 @@ if (typeof jQuery !== 'undefined') {
 					result += "</select>";
 					return result;
 				};
-				return this;
-			}();
+			}
+			var units = new Units();
 			$.getJSON(
 				urlPrepend+"unit/list",
 				{},
@@ -34,38 +35,64 @@ if (typeof jQuery !== 'undefined') {
 				}
 			);
 
-			function createIngredientForm(jsonElement){
+			// make a mt string from null or undefined
+			function format(string){
+				if(string === null){
+					return "";
+				}
+				if(string === 'undefined'){
+					return "";
+				}
+				return string;
+			}
+			function createIngredientForm(ingredientInstance){
 				var removeCallbackString = "needs-remove-callback";
 				var result = "<tr class='"+removeCallbackString+"'>";
 				var fieldName = "ingredientsChoice.";
 
-				result += "<td><input class='form-control' name='"+fieldName+"prepend' /></td>";
-				result += "<td><input class='form-control' name='"+fieldName+"quantity' type='number' required/></td>";
-				if(jsonElement.unit === null){
-					jsonElement.unit = {id: 0};
+				result += "<td><input class='form-control' name='"+fieldName+"prepend' "+
+					"value='"+format(ingredientInstance.prepend)+"'/></td>";
+
+				result += "<td><input class='form-control' name='"+fieldName+"quantity' type='number' "+
+					"value='"+format(ingredientInstance.quantity)+"' required/></td>";
+
+				if(ingredientInstance.preferedUnit === null){
+					ingredientInstance.preferedUnit = {id: 0};
 				}
-				result += "<td>"+units.printElement(fieldName+"unit.id", jsonElement.unit.id)+"</td>";
-				result += "<td><input class='form-control' name='"+fieldName+"content.id' type='hidden' value='"+jsonElement.id+"'>"+jsonElement.name+"</td>";
-				result += "<td><input class='form-control' name='"+fieldName+"ammend' /></td>";
+				result += "<td>"+units.printElement(fieldName+"unit.id", ingredientInstance.preferedUnit.id)+"</td>";
+
+				result += "<td><input class='form-control' name='"+fieldName+"content.id' type='hidden' "+
+					"value='"+ingredientInstance.ingredient.id+"'>"+ingredientInstance.ingredient.name+"</td>";
+
+				result += "<td><input class='form-control' name='"+fieldName+"ammend' "+
+					"value='"+format(ingredientInstance.ammend)+"' /></td>";
+
 				result += "<td><span class='button-symbol glyphicon glyphicon-remove-sign remove-ingredient'></span></td>";
 
 				$(".edit-ingredients").append(result+"</tr>");
 
 				$("."+removeCallbackString +" .remove-ingredient").on("click", function(){
 					$(this).parents("tr").remove();
-					createIngredientLI(jsonElement);
+					createIngredientLI(ingredientInstance.ingredient);
 				});
 				$("."+removeCallbackString).removeClass(removeCallbackString);
 			}
-			function createIngredientLI(jsonElement){
+			function createIngredientLI(contentInstance){
 
 				var addCallbackString = "needs-add-callback";
 				$(".ingredients-choice").append("<li class='"+addCallbackString+"'>"+
-					"<span class='glyphicon glyphicon-plus-sign button-symbol add-ingredient'></span>"+jsonElement.name+"</li>");
+					"<span class='glyphicon glyphicon-plus-sign button-symbol add-ingredient'></span>"+contentInstance.name+"</li>");
 
 				$("."+addCallbackString+" .add-ingredient").on("click", function(){
 					$(this).parent().remove();
-					createIngredientForm(jsonElement);
+					createIngredientForm(
+						{
+							prepend:"",
+							ammend:"",
+							quantity:1,
+							preferedUnit:contentInstance.unit,
+							ingredient:contentInstance
+						});
 				});
 				$("."+addCallbackString).removeClass(addCallbackString);
 			}
@@ -74,14 +101,21 @@ if (typeof jQuery !== 'undefined') {
 				{},
 				function(allContents){
 
-					var instanceId = $("#conentInstance-id").value();
+					var instanceId = $("#contentInstance-id").html();
 					$.getJSON(
-						urlPrepend+"conent/ingredientsList",{id:instanceId},
+						urlPrepend+"content/ingredientsList/"+instanceId,{},
 						function(ingredients){
-							ingredients.foreach(
-								function(simpleIngred){
-								}
-							);
+							ingredients.forEach(function(ingredient){
+								$.getJSON(
+									urlPrepend+"content/show/"+ingredient.ingredient.id,
+									{},
+									function(contentInstance){
+										console.info(contentInstance);
+										ingredient.ingredient = contentInstance;
+										createIngredientForm(ingredient);
+									}
+								);
+							});
 
 						}
 					);

@@ -85,10 +85,9 @@
 	<ul class="ingredients-choice list-unstyled highlight-li">
 	</ul>
 	</div>
+</div>
 <div class="hidden">
-
 	<%--kick in the javascript to generate the select ingredient stuff--%>
 	<span id="contentInstance-id"><g:fieldValue bean="${contentInstance}" field="id" /></span>
 	<asset:javascript src="ingredients-editor.js" />
-</div>
 </div>

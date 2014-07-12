@@ -43,7 +43,7 @@ class ContentController {
 				}
 				else {
 					response.status = 204
-					render ''
+					render '[]'
 				}
 			}
 		}
@@ -52,8 +52,15 @@ class ContentController {
 	def list() {
 		redirect(action: "index", params: params)
 	}
+	@Secured(["permitAll"])
 	def ingredientsList(Long id){
-		render Content.get(id).ingredients as JSON
+		def result = Content.get(id)
+		if(result){
+			render(result.ingredients as JSON)
+			return
+		}
+		response.status = 204
+		render '[]'
 	}
 	@Secured(["permitAll"])
 	def show(Long id) {
