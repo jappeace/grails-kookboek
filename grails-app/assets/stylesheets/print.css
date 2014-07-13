@@ -1,0 +1,16 @@
+
+h2{
+
+	margin:0;
+	padding:0;
+}
+.recipe{
+	page-break-inside:avoid;
+	margin-bottom: 2em;
+}
+.ingredient td{
+	border-bottom:1px dotted;
+}
+.ingredients{
+	width:15cm;
+}

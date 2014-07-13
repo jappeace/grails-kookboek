@@ -36,6 +36,12 @@ class Ingredient implements Comparable<Ingredient>{
 	static mapping = {
 		sort "ingredient"
 	}
+	Unit getPreferedUnit(){
+		if(preferedUnit){
+			return preferedUnit
+		}
+		return ingredient.unit
+	}
 	@Override
 	String toString(){
 		if(ingredient == null){

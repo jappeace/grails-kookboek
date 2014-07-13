@@ -11,5 +11,12 @@
 		</g:link>
 
 	</li>
+	<li>
+		<g:link controller="print" action="index">
+		<span class="glyphicon glyphicon-print"></span>
+		Print
+		</g:link>
+
+	</li>
 
 </ul>
