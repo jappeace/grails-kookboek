@@ -26,6 +26,7 @@ class ContentController {
 			'PUT'
 		],
 		delete:[
+			'GET', // less inconvenient, but weird
 			'POST',
 			'DELETE'
 		]

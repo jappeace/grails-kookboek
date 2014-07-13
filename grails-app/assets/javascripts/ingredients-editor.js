@@ -67,7 +67,7 @@ if (typeof jQuery !== 'undefined') {
 				result += "<td><input class='form-control' name='"+fieldName+"ammend' "+
 					"value='"+format(ingredientInstance.ammend)+"' /></td>";
 
-				result += "<td><span class='button-symbol glyphicon glyphicon-remove-sign remove-ingredient'></span></td>";
+				result += "<td><span class='big-font button-symbol glyphicon glyphicon-remove-sign remove-ingredient'></span></td>";
 
 				$(".edit-ingredients").append(result+"</tr>");
 
