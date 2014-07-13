@@ -33,6 +33,9 @@ class Ingredient implements Comparable<Ingredient>{
 		ammend nullable:true
 		preferedUnit nullable:true
     }
+	static mapping = {
+		sort "ingredient"
+	}
 	@Override
 	String toString(){
 		if(ingredient == null){
@@ -59,5 +62,4 @@ class Ingredient implements Comparable<Ingredient>{
 	int compareTo(Ingredient to){
 		ingredient.compareTo(to.ingredient)
 	}
-
 }

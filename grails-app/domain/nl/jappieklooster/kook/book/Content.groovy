@@ -28,6 +28,7 @@ class Content extends Authored {
 	static mapping = {
 		description type:'text'
 	}
+	static mappedBy = [ingredients:'recipe']
 	String toString(){
 		// filetring out instances that are created with new
 		if(name == null && unit == null){
@@ -38,5 +39,4 @@ class Content extends Authored {
 		// return with first word capitalized, decapitlize the rest
 		return Echo.UpperCaseFirst(name)+" "+ u.toString().toLowerCase()
 	}
-	static mappedBy = [ingredients:'recipe']
 }

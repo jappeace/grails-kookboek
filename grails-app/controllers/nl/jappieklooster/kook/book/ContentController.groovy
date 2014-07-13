@@ -33,12 +33,12 @@ class ContentController {
 	]
 
 	def index(Integer max) {
-		params.max = max ?: 10
-		def list = Content.list(params)
+		def list = Content.list(sort:"name")
 		def listObject = [contentInstanceList: list, contentInstanceTotal: Content.count()]
 		withFormat {
 			html listObject
 			json {
+				println list
 				if (list){
 					render list as JSON
 				}
@@ -272,24 +272,51 @@ class ContentController {
 			}
 		}
 	}
-	private void attachIngredients(Content contentInstance){
+
+	/**
+	* there is no easy way to put a bunch of values in the same array and sent it trough post
+	* to deal with this this function finds the ingredient values and puts it in the same object
+	* from the param data
+	*/
+	private List<Ingredient> parseParamsToIngredientsList(Content contentInstance){
 
 		List<Ingredient> usrSelIngreds = new ArrayList<Ingredient>()
 
 		String fieldName = "ingredientsChoice."
 		// construct a sane data structure
-		params[fieldName+"content.id"].eachWithIndex{ def id, int index ->
-			usrSelIngreds.add(
-				new Ingredient(
-					recipe: contentInstance,
-					ingredient: Content.findById(id),
-					prepend:params[fieldName+"prepend"][index],
-					ammend:params[fieldName+"ammend"][index],
-					preferedUnit:Unit.findById(params[fieldName+"unit.id"][index]),
-					quantity:params[fieldName+"quantity"][index]
-				)
-			);
+
+		if(params[fieldName+"prepend"] instanceof String){
+			// in this case only one ingredient is selected
+			usrSelIngreds.add(new Ingredient(
+				recipe: contentInstance,
+				ingredient: Content.findById(params[fieldName+"content.id"]),
+				prepend: params[fieldName+"prepend"],
+				ammend: params[fieldName+"ammend"],
+				preferedUnit: Unit.findById(params[fieldName+"unit.id"]),
+				quantity: params[fieldName+"quantity"]
+			));
+			return usrSelIngreds
 		}
+		params[fieldName+"content.id"].eachWithIndex{ def id, int index ->
+			usrSelIngreds.add(new Ingredient(
+				recipe: contentInstance,
+				ingredient: Content.findById(id),
+				prepend: params[fieldName+"prepend"][index],
+				ammend: params[fieldName+"ammend"][index],
+				preferedUnit: Unit.findById(params[fieldName+"unit.id"][index]),
+				quantity: params[fieldName+"quantity"][index]
+			));
+		}
+		return usrSelIngreds
+	}
+
+	/**
+	* this function attaches ingredients to a content in a logical way
+	*/
+	private void attachIngredients(Content contentInstance){
+
+		List<Ingredient> usrSelIngreds = parseParamsToIngredientsList(contentInstance)
+
 		// delete evrything thats not in params from content instance (allows user to delete ingredients)
 		// otherwise delete the param (user input, because the old one contains more info)
 		List<Ingredient> ingredients = new ArrayList<Ingredient>(contentInstance.ingredients)
