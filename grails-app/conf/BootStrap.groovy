@@ -36,13 +36,13 @@ class BootStrap {
 		]
 		def startUsers = [
 			[
-				user: users.admin, 
+				user: users.admin,
 				role: roles.admin
 			], [
-				user: users.chef, 
+				user: users.chef,
 				role: roles.chef
 			], [
-				user: users.visitor, 
+				user: users.visitor,
 				role: roles.guest
 			],
 		]
@@ -61,40 +61,41 @@ class BootStrap {
 			things: new Dimension(name: "Ding")
 		]
 		storeIfNoTypeElements(dimensions, Dimension)
+
 		def units = [
 			gr: new Unit(
-				name: "gram", 
-				plural:"grammen", 
-				abbreviation:"gr.", 
+				name: "gram",
+				plural:"grammen",
+				abbreviation:"gr.",
 				dimension: dimensions.weight
 			),
 			ml: new Unit(
-				name: "mililiter", 
-				plural:"mililiters", 
-				abbreviation:"ml.", 
+				name: "mililiter",
+				plural:"mililiters",
+				abbreviation:"ml.",
 				dimension: dimensions.volume
 			),
 			cl: new Unit(
-				name: "centiliter", 
-				plural:"centiliters", 
-				abbreviation:"cl.", 
+				name: "centiliter",
+				plural:"centiliters",
+				abbreviation:"cl.",
 				dimension: dimensions.volume
 			),
 			dl: new Unit(
-				name: "deciliter", 
-				plural:"deciliters", 
-				abbreviation:"dl.", 
+				name: "deciliter",
+				plural:"deciliters",
+				abbreviation:"dl.",
 				dimension: dimensions.volume
 			),
 			l: new Unit(
-				name: "liter", 
-				plural:"liters", 
-				abbreviation:"l.", 
+				name: "liter",
+				plural:"liters",
+				abbreviation:"l.",
 				dimension: dimensions.volume
 			),
 			toes: new Unit(
-				name: "teen", 
-				plural:"tenen",  
+				name: "teen",
+				plural:"tenen",
 				dimension: dimensions.things
 			),
 			leaf: new Unit(
@@ -118,81 +119,8 @@ class BootStrap {
 			koud: new Category(name: "koud", author: users.admin),
 			warm: new Category(name: "warm", author: users.admin),
 		]
-		categories.dessert = new Category(name: "dessert", parent: categories.koud, author: users.admin)
-		categories.voor = new Category(name: "voorgerecht", parent: categories.koud, author: users.admin)
 		storeIfNoTypeElements(categories, Category)
 
-		// add some content
-		def contents =[
-			aardbei:	new Content(
-				name: "aardbei",
-				unit: units.gr
-			),
-			crfr:		new Content(
-				name: "cr\u00E8me fra\u00CEche",
-				unit: units.gr,
-				plural:"cr\u00E8me fra\u00CEches" 
-			),
-			eidooi:		new Content(
-				name: "eidooier",
-				unit: units.gr,
-				description: "Ei dooier of ei geel"
-			),
-			frdebois:	new Content(
-				name: "fraiche de bois",
-				unit: units.dl
-			),
-			gelatine:	new Content(
-				name: "gelantine",
-				unit: units.leaf,
-				plural:"gelantines"
-			),
-			sugar:		new Content(
-				name: "suiker",
-				unit: units.gr,
-				plural: "suikers"
-			)
-		]
-		contents.aardbeienTaart = new Content(
-			name: "aardbeientaart",
-			description:"harde wener bodem.  900 gram aardbeien, 50 gram frac\u00CEhe de bois.  Verwarmen en hierin 10 blaadjes gelatine oplossen.  Als dit koud is mengen met de eidooier, crm\u00E8e frac\u00CEhe en suiker.  Dit storten op de harde wener bodem en afbakken op 90 graden 1,5 uur."
-		)
-		contents.each{ key, content ->
-			content.author = users.chef
-		}
-		storeIfNoTypeElements(contents, Content)
-
-		[
-			new Ingredient(
-				ingredient: contents.aardbei,
-				prepend: "diepvries",
-				quantity:2023
-			),
-			new Ingredient(
-				ingredient: contents.crfr,
-				quantity:200
-			),
-			new Ingredient(
-				ingredient: contents.eidooi,
-				quantity:2
-			),
-			new Ingredient(
-				ingredient: contents.frdebois,
-				prepend: "scheutje",
-				quantity:4
-			),
-			new Ingredient(
-				ingredient: contents.gelatine,
-				quantity:10
-			),
-			new Ingredient(
-				ingredient: contents.sugar,
-				quantity:100
-			)
-		].each{
-			contents.aardbeienTaart.addToIngredients(it)
-		}
-		categories.koud.addToContents(contents.aardbeienTaart)
     }
     def destroy = {
     }
