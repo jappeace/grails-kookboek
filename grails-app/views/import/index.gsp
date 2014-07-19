@@ -19,7 +19,7 @@
 				<label for="uri">
 					uri
 				</label>
-				<input name="uri" value="db.dehuiskamer.com"/>
+				<input name="uri" value="jappieklooster.nl"/>
 			</div>
 			<div class="row">
 				<label for="name">

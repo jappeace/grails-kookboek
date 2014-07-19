@@ -12,6 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import groovy.sql.Sql
 
 @Secured(["ROLE_ADMIN"])
 @Transactional(readOnly = true)
@@ -27,26 +28,20 @@ class ImportController {
 	def begin(){
 		println params
 		flash.message = "success!"
-		Connection con = connect()
-		ResultSet result = con.prepareStatement(
-			"SELECT * FROM ingredients ingred JOIN names ON name_id == id"
-		).executeQuery()
 
-		while(result.next()){
-			println result.getString("name")
+		def driver = Class.forName("com.mysql.jdbc.Driver").newInstance();
+		Properties properties = new Properties();
+		properties.put("user",params["name"])
+		properties.put("password", params["pass"])
+		Connection connection = driver.connect("jdbc:mysql://"+params["uri"]+":3306/"+params["name"], properties);
+		Sql sql = new Sql(connection);
+		sql.eachRow(
+			"SELECT * FROM ingredients ingred JOIN names ON name_id = names.id ORDER BY name"
+		){
+			if(it.recipe_id != null){
+				return
+			}
 		}
 		redirect (action:"index", params:params)
-	}
-
-	/**
-	* connec to the target db
-	*/
-	private Connection connect(){
-		Class.forName("com.mysql.jdbc.Driver");
-		DriverManager.getConnection("jdbc:mysql://"+
-		params["uri"]+"/"+
-		params["name"]+"?" +
-		"user="+params["name"]+
-		"&password="+params["pass"]);
 	}
 }
