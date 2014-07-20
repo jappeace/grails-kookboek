@@ -8,7 +8,10 @@ import nl.jappieklooster.Echo
 class Content extends Authored {
 	String description
 	SortedSet<Ingredient> ingredients
-	static hasMany = [ingredients: Ingredient, categories:Category]
+	static hasMany = [
+		ingredients: Ingredient,
+		categories:Category
+	]
 	/** unit of measurement (kg or l)
 	* when set to null it will use itself als a value.
 	* ie a pie would be measured in pies instead of grams. (which could also work, but the option is open)

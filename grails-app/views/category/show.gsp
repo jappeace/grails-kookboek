@@ -1,5 +1,6 @@
 
 <%@ page import="nl.jappieklooster.kook.book.Category" %>
+<%@ page import="nl.jappieklooster.kook.book.Content" %>
 <!DOCTYPE html>
 <html>
 	<head>

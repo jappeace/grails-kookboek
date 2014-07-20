@@ -32,7 +32,14 @@
 								<g:elseif test="${i.ingredient.unit}">
 									<td><g:fieldValue bean="${i.ingredient.unit}" field="name"/></td>
 								</g:elseif>
-								<td><g:fieldValue bean="${i.ingredient}" field="name"/></td>
+								<g:else>
+									<td></td>
+								</g:else>
+								<td>
+									<g:link action="show" id="${fieldValue(bean:i.ingredient,field:'id')}">
+										<g:fieldValue bean="${i.ingredient}" field="name"/>
+									</g:link>
+								</td>
 								<td><g:fieldValue bean="${i}" field="ammend"/></td>
 							</tr>
 						</g:each>

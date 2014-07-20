@@ -38,9 +38,9 @@
 			<legend>Extra opties</legend>
 			<div class="row">
 				<label for="categories">
-					categorien
+					categorie voor recepten
 				</label>
-				<g:select name="categories" from="${nl.jappieklooster.kook.book.Category.list()}" multiple="multiple" optionKey="id" size="5" value="${contentInstance?.categories*.id}" class="many-to-many"/>
+				<g:select name="recipeCategories" from="${nl.jappieklooster.kook.book.Category.list()}" multiple="multiple" optionKey="id" size="5" value="${contentInstance?.categories*.id}" class="many-to-many"/>
 				<p class="info">
 					het oude systeem kende geen categorien, wijs hier de gewenste categorien toe
 				</p>
@@ -50,7 +50,7 @@
 			<g:if test="${flash.message}">
 			<div class="message" role="status">${flash.message}</div>
 			</g:if>
-			<g:submitButton name="create" class="save" value="${message(code: 'default.button.print.label', default: 'print')}" />
+			<g:submitButton name="create" class="save" value="${message(code: 'default.button.print.label', default: 'import')}" />
 		</fieldset>
 	</g:form>
 	</body>

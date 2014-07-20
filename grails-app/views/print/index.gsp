@@ -21,16 +21,19 @@
 					Categorieen
 				</label>
 				<g:select name="categories" from="${nl.jappieklooster.kook.book.Category.list()}" multiple="multiple" optionKey="id" size="5" value="${contentInstance?.categories*.id}" class="many-to-many"/>
+				<p>
+					geen categorien betekent alles
+				</p>
 			</div>
 			<div class="row">
 				<label >
-					<g:checkBox class="ignore-defaults" name="descriptionless" value="${true}" />
+					<g:checkBox class="ignore-defaults" name="descriptionless" value="${false}" />
 					Moeten recepten zonder beschrijving worden wegelaten?
 				</label>
 			</div>
 			<div class="row">
 				<label >
-					<g:checkBox class="ignore-defaults" name="ingredientless" value="${true}" />
+					<g:checkBox class="ignore-defaults" name="ingredientless" value="${false}" />
 					Moeten recepten zonder ingredienten worden wegelaten?
 				</label>
 			</div>

@@ -26,10 +26,13 @@ class PrintController {
 		desiredCategories.each{
 			contents.addAll(it.contents)
 		}
+		if(contents.isEmpty()){
+			contents.addAll(Content.list())
+		}
 		def list = contents.findAll{
 			boolean result = true
 			if(params["descriptionless"] == "on"){
-				result = result && it.description != ""
+				result = result && it.description
 			}
 			if(params["ingredientless"] == "on"){
 				result = result && !it.ingredients.isEmpty()
