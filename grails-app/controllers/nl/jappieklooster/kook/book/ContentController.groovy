@@ -9,7 +9,7 @@ import groovy.util.logging.*
 import nl.jappieklooster.kook.quantification.Unit
 
 @Log
-@Secured(["ROLE_ADMIN"])
+@Secured(["ROLE_ADMIN", "ROLE_CHEF"])
 @Transactional(readOnly = true)
 class ContentController {
 
