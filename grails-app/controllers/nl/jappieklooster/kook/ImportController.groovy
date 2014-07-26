@@ -50,6 +50,7 @@ class ImportController {
 			Content content = ingredRecipes.find{it.name == row.name && it.description == row.description}
 			if(content){
 				attachIngredients(content, row.id, ingredients)
+				content.save()
 				bindCategories(content,categories)
 				return
 			}
@@ -66,9 +67,6 @@ class ImportController {
 		redirect (action:"index", params:params)
 	}
 	private void bindCategories(Content content, List<Category> categories){
-		content.save(
-			flush:true
-		)
 		categories.each{
 			it.addToContents(content)
 		}

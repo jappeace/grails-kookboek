@@ -1,4 +1,5 @@
 <%@ page import="nl.jappieklooster.kook.book.Content" %>
+<%@ page import="nl.jappieklooster.kook.quantification.Unit" %>
 <fieldset>
 <legend>Text</legend>
 <div class="form-group ${hasErrors(bean: contentInstance, field: 'name', 'has-error')} required">
@@ -89,5 +90,6 @@
 <div class="hidden">
 	<%--kick in the javascript to generate the select ingredient stuff--%>
 	<span id="contentInstance-id"><g:fieldValue bean="${contentInstance}" field="id" /></span>
+	<span id="available-units">${Unit.list().encodeAsJSON()}</span>
 	<asset:javascript src="ingredients-editor.js" />
 </div>

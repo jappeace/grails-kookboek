@@ -25,15 +25,9 @@ if (typeof jQuery !== 'undefined') {
 				};
 			}
 			var units = new Units();
-			$.getJSON(
-				urlPrepend+"unit/list",
-				{},
-				function(result){
-					result.forEach(function(jsonElement){
-						units.addUnit(jsonElement.id, jsonElement.name);
-					});
-				}
-			);
+			JSON.parse($("#available-units").html()).forEach(function(jsonElement){
+				units.addUnit(jsonElement.id, jsonElement.name);
+			});
 
 			// make a mt string from null or undefined
 			function format(string){
@@ -97,10 +91,12 @@ if (typeof jQuery !== 'undefined') {
 				$("."+addCallbackString).removeClass(addCallbackString);
 			}
 			var instanceId = $("#contentInstance-id").html();
+			var inform = [];
 			$.getJSON(
 				urlPrepend+"content/ingredientsList/"+instanceId,{},
 				function(ingredients){
 					ingredients.forEach(function(ingredient){
+						inform.push(ingredient.ingredient.id);
 						$.getJSON(
 							urlPrepend+"content/show/"+ingredient.ingredient.id,
 							{},
@@ -113,12 +109,17 @@ if (typeof jQuery !== 'undefined') {
 
 				}
 			);
+			console.debug(inform);
 			$.getJSON(
 				urlPrepend+"content/list/"+format(instanceId),
 				{},
 				function(allContents){
 
-					allContents.forEach(createIngredientLI);
+					allContents.forEach(function(content){
+						if(inform.indexOf(content.id) === -1){
+							createIngredientLI(content);
+						}
+					});
 				}
 			);
 		});
