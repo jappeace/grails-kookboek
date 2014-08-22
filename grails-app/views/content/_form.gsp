@@ -14,7 +14,7 @@
 	<label for="plural">
 		Meervoud
 	</label>
-	<g:textField name="plural" value="${contentInstance?.plural}"/>
+	<g:textField name="plural" value="${contentInstance?.plural == 'en' ? '' : contentInstance?.plural }"/>
 	<p>
 	Laat leeg voor naam + en
 	</p>

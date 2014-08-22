@@ -95,6 +95,7 @@ if (typeof jQuery !== 'undefined') {
 			$.getJSON(
 				urlPrepend+"content/ingredientsList/"+instanceId,{},
 				function(ingredients){
+					console.debug(ingredients);
 					ingredients.forEach(function(ingredient){
 						inform.push(ingredient.ingredient.id);
 						$.getJSON(
@@ -109,7 +110,6 @@ if (typeof jQuery !== 'undefined') {
 
 				}
 			);
-			console.debug(inform);
 			$.getJSON(
 				urlPrepend+"content/list/"+format(instanceId),
 				{},
