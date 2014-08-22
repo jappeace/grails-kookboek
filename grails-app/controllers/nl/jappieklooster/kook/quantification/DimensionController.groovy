@@ -6,7 +6,7 @@ import grails.converters.JSON
 import grails.transaction.Transactional
 import grails.plugin.springsecurity.annotation.Secured
 
-@Secured(["ROLE_ADMIN"])
+@Secured(["ROLE_ADMIN", "ROLE_CHEF"])
 @Transactional(readOnly = true)
 class DimensionController {
 

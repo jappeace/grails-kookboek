@@ -10,7 +10,7 @@ import nl.jappieklooster.kook.quantification.Unit
 import groovy.sql.Sql
 
 @Secured(["ROLE_ADMIN"])
-@Transactional(readOnly = true)
+@Transactional(readOnly = false)
 class ImportController {
 	Sql sql
 

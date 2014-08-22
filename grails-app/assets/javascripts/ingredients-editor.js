@@ -4,7 +4,7 @@ if (typeof jQuery !== 'undefined') {
 	(function($) {
 		"use strict";
 		$(function() {
-			var urlPrepend = "/kook/";
+			var urlPrepend = "/";
 			function Units(){
 				var unitRows = [];
 				this.addUnit = function(id, name){
